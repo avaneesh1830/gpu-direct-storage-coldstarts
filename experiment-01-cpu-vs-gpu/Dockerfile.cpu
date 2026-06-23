@@ -1,9 +1,0 @@
-# CPU instance — uses your custom ML image (avaneesharoor/ml-experiments)
-FROM avaneesharoor/ml-experiments:latest
-
-WORKDIR /app
-
-COPY benchmark.py generate_data.py .
-
-ENTRYPOINT []
-CMD ["python3", "benchmark.py"]
