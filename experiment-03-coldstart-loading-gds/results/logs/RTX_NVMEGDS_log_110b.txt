@@ -1,0 +1,312 @@
+=== [110b] step 1: first load (downloads if not cached) ===
+GPU    : NVIDIA RTX PRO 6000 Blackwell Server Edition | PCIe gen1 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : load | label: nvmegds_first_download
+INFO 07-12 19:17:43 [utils.py:278] non-default args: {'load_format': 'fastsafetensors', 'dtype': 'float16', 'max_model_len': 4096, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'casperhansen/mistral-large-instruct-2407-awq'}
+WARNING 07-12 19:17:43 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-12 19:17:43 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-12 19:17:53 [model.py:617] Resolved architecture: MistralForCausalLM
+INFO 07-12 19:17:53 [model.py:1752] Using max model len 4096
+INFO 07-12 19:17:53 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-12 19:17:53 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=16384.
+Parse safetensors files:   0%|          | 0/14 [00:00<?, ?it/s]Parse safetensors files: 100%|██████████| 14/14 [00:00<00:00, 174.09it/s]
+INFO 07-12 19:17:54 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-12 19:17:54 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-12 19:17:54 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-12 19:17:54 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-12 19:17:54 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-12 19:17:54 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=336) INFO 07-12 19:17:55 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='casperhansen/mistral-large-instruct-2407-awq', speculative_config=None, tokenizer='casperhansen/mistral-large-instruct-2407-awq', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=fastsafetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=casperhansen/mistral-large-instruct-2407-awq, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [16384], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=336) INFO 07-12 19:17:55 [parallel_state.py:1422] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.17.0.2:46379 backend=nccl
+(EngineCore pid=336) INFO 07-12 19:17:55 [parallel_state.py:1735] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=336) INFO 07-12 19:17:57 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=336) INFO 07-12 19:17:57 [gpu_model_runner.py:5037] Starting to load model casperhansen/mistral-large-instruct-2407-awq...
+(EngineCore pid=336) INFO 07-12 19:17:57 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(EngineCore pid=336) INFO 07-12 19:17:58 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=336) INFO 07-12 19:17:58 [flash_attn.py:636] Using FlashAttention version 2
+(EngineCore pid=336) INFO 07-12 19:19:00 [weight_utils.py:603] Time spent downloading weights for casperhansen/mistral-large-instruct-2407-awq: 61.833686 seconds
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:   0% Completed | 0/14 [00:00<?, ?it/s]
+get_mempolicy: Operation not permitted
+(EngineCore pid=336) WARNING 07-12 19:19:01 [weight_utils.py:1149] GDS not enabled, setting `nogds=True`.
+(EngineCore pid=336) WARNING 07-12 19:19:01 [weight_utils.py:1149] For more information, see: https://github.com/foundation-model-stack/fastsafetensors?tab=readme-ov-file#basic-api-usages
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:   7% Completed | 1/14 [00:01<00:18,  1.40s/it]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  14% Completed | 2/14 [00:02<00:12,  1.01s/it]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  21% Completed | 3/14 [00:02<00:09,  1.13it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  29% Completed | 4/14 [00:03<00:08,  1.20it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  36% Completed | 5/14 [00:04<00:07,  1.24it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  43% Completed | 6/14 [00:05<00:06,  1.27it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  50% Completed | 7/14 [00:05<00:05,  1.29it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  57% Completed | 8/14 [00:06<00:04,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  64% Completed | 9/14 [00:07<00:03,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  71% Completed | 10/14 [00:08<00:03,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  79% Completed | 11/14 [00:08<00:02,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  86% Completed | 12/14 [00:09<00:01,  1.32it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  93% Completed | 13/14 [00:10<00:00,  1.32it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader: 100% Completed | 14/14 [00:10<00:00,  1.68it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader: 100% Completed | 14/14 [00:10<00:00,  1.32it/s]
+(EngineCore pid=336) 
+(EngineCore pid=336) INFO 07-12 19:19:11 [default_loader.py:397] Loading weights took 10.64 seconds
+(EngineCore pid=336) INFO 07-12 19:19:20 [gpu_model_runner.py:5132] Model loading took 60.51 GiB memory and 82.629926 seconds
+(EngineCore pid=336) INFO 07-12 19:19:44 [gpu_worker.py:466] Available KV cache memory: 20.96 GiB
+(EngineCore pid=336) INFO 07-12 19:19:44 [kv_cache_utils.py:1733] GPU KV cache size: 62,432 tokens
+(EngineCore pid=336) INFO 07-12 19:19:44 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 15.24x
+(EngineCore pid=336) INFO 07-12 19:19:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(EngineCore pid=336) INFO 07-12 19:19:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=336) INFO 07-12 19:19:44 [core.py:309] init engine (profile, create kv cache, warmup model) took 23.34 s
+(EngineCore pid=336) WARNING 07-12 19:19:44 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=336) WARNING 07-12 19:19:44 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=336) INFO 07-12 19:19:44 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=336) INFO 07-12 19:19:44 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 86.60it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](EngineCore pid=336) WARNING 07-12 19:19:45 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.13it/s, est. speed input: 356.35 toks/s, output: 1.13 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.13it/s, est. speed input: 356.35 toks/s, output: 1.13 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.13it/s, est. speed input: 356.35 toks/s, output: 1.13 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1129.93it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.24it/s, est. speed input: 1330.19 toks/s, output: 4.24 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.24it/s, est. speed input: 1330.19 toks/s, output: 4.24 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1330.19 toks/s, output: 4.24 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1357.82it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.27 toks/s, output: 4.23 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.27 toks/s, output: 4.23 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1327.27 toks/s, output: 4.23 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1449.31it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.94 toks/s, output: 4.23 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.94 toks/s, output: 4.23 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.94 toks/s, output: 4.23 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1546.57it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.00s/it, est. speed input: 62.76 toks/s, output: 19.99 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.00s/it, est. speed input: 62.76 toks/s, output: 19.99 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.00s/it, est. speed input: 62.76 toks/s, output: 19.99 toks/s]
+(EngineCore pid=336) INFO 07-12 19:19:51 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=336) INFO 07-12 19:19:51 [core.py:1289] Shutdown complete
+{
+  "timestamp": "2026-07-12T19:17:26",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "pcie": "gen1 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "nvmegds_first_download",
+  "enforce_eager": true,
+  "load_format": "fastsafetensors",
+  "model_disk_gb": 64.9,
+  "llm_init_s": 121.27,
+  "ttft_first_ms": 894.1,
+  "ttft_warm_ms": 237.6,
+  "decode_tps": 20.8,
+  "effective_load_gbps": 0.54
+}
+Saved -> /tmp/results/results.jsonl
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/weakref.py", line 666, in _exitfunc
+    f()
+  File "/usr/lib/python3.12/weakref.py", line 590, in __call__
+    return info.func(*info.args, **(info.kwargs or {}))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/library.py", line 628, in _del_library
+    _clear_torch_ops_cache(op_defs)
+  File "/usr/local/lib/python3.12/dist-packages/torch/library.py", line 593, in _clear_torch_ops_cache
+    if not hasattr(namespace, name):
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1383, in __getattr__
+    op, overload_names = _get_packet(qualified_op_name, module_name)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1408, in _get_packet
+    op, overload_names = torch._C._jit_get_operation(qualname)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0x80 in position 181: invalid start byte
+=== [110b] step 2: COLD load (page cache dropped) ===
+[run.sh] page cache dropped
+GPU    : NVIDIA RTX PRO 6000 Blackwell Server Edition | PCIe gen5 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : load | label: nvmegds_cold
+INFO 07-12 19:20:17 [utils.py:278] non-default args: {'load_format': 'fastsafetensors', 'dtype': 'float16', 'max_model_len': 4096, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'casperhansen/mistral-large-instruct-2407-awq'}
+WARNING 07-12 19:20:17 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-12 19:20:17 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-12 19:20:27 [model.py:617] Resolved architecture: MistralForCausalLM
+INFO 07-12 19:20:27 [model.py:1752] Using max model len 4096
+INFO 07-12 19:20:28 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-12 19:20:28 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=16384.
+Parse safetensors files:   0%|          | 0/14 [00:00<?, ?it/s]Parse safetensors files:  14%|█▍        | 2/14 [00:00<00:03,  3.23it/s]Parse safetensors files: 100%|██████████| 14/14 [00:00<00:00, 22.60it/s]
+INFO 07-12 19:20:29 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-12 19:20:29 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-12 19:20:29 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-12 19:20:29 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-12 19:20:29 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-12 19:20:29 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=339) INFO 07-12 19:20:29 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='casperhansen/mistral-large-instruct-2407-awq', speculative_config=None, tokenizer='casperhansen/mistral-large-instruct-2407-awq', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=fastsafetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=casperhansen/mistral-large-instruct-2407-awq, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [16384], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=339) INFO 07-12 19:20:30 [parallel_state.py:1422] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.17.0.2:51367 backend=nccl
+(EngineCore pid=339) INFO 07-12 19:20:30 [parallel_state.py:1735] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=339) INFO 07-12 19:20:32 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=339) INFO 07-12 19:20:32 [gpu_model_runner.py:5037] Starting to load model casperhansen/mistral-large-instruct-2407-awq...
+(EngineCore pid=339) INFO 07-12 19:20:32 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(EngineCore pid=339) INFO 07-12 19:20:32 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=339) INFO 07-12 19:20:32 [flash_attn.py:636] Using FlashAttention version 2
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:   0% Completed | 0/14 [00:00<?, ?it/s]
+get_mempolicy: Operation not permitted
+(EngineCore pid=339) WARNING 07-12 19:20:34 [weight_utils.py:1149] GDS not enabled, setting `nogds=True`.
+(EngineCore pid=339) WARNING 07-12 19:20:34 [weight_utils.py:1149] For more information, see: https://github.com/foundation-model-stack/fastsafetensors?tab=readme-ov-file#basic-api-usages
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:   7% Completed | 1/14 [00:03<00:40,  3.13s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  14% Completed | 2/14 [00:05<00:32,  2.70s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  21% Completed | 3/14 [00:07<00:28,  2.57s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  29% Completed | 4/14 [00:10<00:25,  2.54s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  36% Completed | 5/14 [00:12<00:22,  2.51s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  43% Completed | 6/14 [00:15<00:19,  2.48s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  50% Completed | 7/14 [00:17<00:17,  2.47s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  57% Completed | 8/14 [00:20<00:14,  2.45s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  64% Completed | 9/14 [00:22<00:11,  2.37s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  71% Completed | 10/14 [00:24<00:09,  2.27s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  79% Completed | 11/14 [00:26<00:07,  2.35s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  86% Completed | 12/14 [00:29<00:04,  2.40s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader:  93% Completed | 13/14 [00:31<00:02,  2.44s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader: 100% Completed | 14/14 [00:32<00:00,  1.92s/it]
+(EngineCore pid=339) Loading safetensors using Fastsafetensor loader: 100% Completed | 14/14 [00:32<00:00,  2.34s/it]
+(EngineCore pid=339) 
+(EngineCore pid=339) INFO 07-12 19:21:06 [default_loader.py:397] Loading weights took 32.72 seconds
+(EngineCore pid=339) INFO 07-12 19:21:16 [gpu_model_runner.py:5132] Model loading took 60.51 GiB memory and 43.207552 seconds
+(EngineCore pid=339) INFO 07-12 19:21:39 [gpu_worker.py:466] Available KV cache memory: 20.96 GiB
+(EngineCore pid=339) INFO 07-12 19:21:39 [kv_cache_utils.py:1733] GPU KV cache size: 62,432 tokens
+(EngineCore pid=339) INFO 07-12 19:21:39 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 15.24x
+(EngineCore pid=339) INFO 07-12 19:21:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(EngineCore pid=339) INFO 07-12 19:21:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=339) INFO 07-12 19:21:39 [core.py:309] init engine (profile, create kv cache, warmup model) took 23.31 s
+(EngineCore pid=339) WARNING 07-12 19:21:39 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=339) WARNING 07-12 19:21:39 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=339) INFO 07-12 19:21:39 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=339) INFO 07-12 19:21:39 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 81.47it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](EngineCore pid=339) WARNING 07-12 19:21:40 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.16it/s, est. speed input: 365.42 toks/s, output: 1.16 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.16it/s, est. speed input: 365.42 toks/s, output: 1.16 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.16it/s, est. speed input: 365.42 toks/s, output: 1.16 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1119.38it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.24it/s, est. speed input: 1330.60 toks/s, output: 4.24 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.24it/s, est. speed input: 1330.60 toks/s, output: 4.24 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1330.60 toks/s, output: 4.24 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1385.17it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.61 toks/s, output: 4.23 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.61 toks/s, output: 4.23 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1327.61 toks/s, output: 4.23 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1613.19it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1326.51 toks/s, output: 4.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1326.51 toks/s, output: 4.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1326.51 toks/s, output: 4.22 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1555.75it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.00s/it, est. speed input: 62.76 toks/s, output: 19.99 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.00s/it, est. speed input: 62.76 toks/s, output: 19.99 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.00s/it, est. speed input: 62.76 toks/s, output: 19.99 toks/s]
+(EngineCore pid=339) INFO 07-12 19:21:46 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=339) INFO 07-12 19:21:46 [core.py:1289] Shutdown complete
+{
+  "timestamp": "2026-07-12T19:20:01",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "pcie": "gen5 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "nvmegds_cold",
+  "enforce_eager": true,
+  "load_format": "fastsafetensors",
+  "model_disk_gb": 64.9,
+  "llm_init_s": 82.13,
+  "ttft_first_ms": 873.0,
+  "ttft_warm_ms": 237.6,
+  "decode_tps": 20.8,
+  "effective_load_gbps": 0.79
+}
+Saved -> /tmp/results/results.jsonl
+=== [110b] step 3: WARM load (weights in page cache) ===
+GPU    : NVIDIA RTX PRO 6000 Blackwell Server Edition | PCIe gen5 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : load | label: nvmegds_warm
+INFO 07-12 19:21:54 [utils.py:278] non-default args: {'load_format': 'fastsafetensors', 'dtype': 'float16', 'max_model_len': 4096, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'casperhansen/mistral-large-instruct-2407-awq'}
+WARNING 07-12 19:21:54 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-12 19:21:54 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-12 19:22:01 [model.py:617] Resolved architecture: MistralForCausalLM
+INFO 07-12 19:22:01 [model.py:1752] Using max model len 4096
+INFO 07-12 19:22:02 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-12 19:22:02 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=16384.
+Parse safetensors files:   0%|          | 0/14 [00:00<?, ?it/s]Parse safetensors files:  86%|████████▌ | 12/14 [00:00<00:00, 22.38it/s]Parse safetensors files: 100%|██████████| 14/14 [00:00<00:00, 26.10it/s]
+INFO 07-12 19:22:02 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-12 19:22:02 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-12 19:22:02 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-12 19:22:02 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-12 19:22:02 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-12 19:22:02 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=336) INFO 07-12 19:22:03 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='casperhansen/mistral-large-instruct-2407-awq', speculative_config=None, tokenizer='casperhansen/mistral-large-instruct-2407-awq', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=fastsafetensors, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=casperhansen/mistral-large-instruct-2407-awq, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [16384], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=336) INFO 07-12 19:22:03 [parallel_state.py:1422] world_size=1 rank=0 local_rank=0 distributed_init_method=tcp://172.17.0.2:49797 backend=nccl
+(EngineCore pid=336) INFO 07-12 19:22:03 [parallel_state.py:1735] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=336) INFO 07-12 19:22:04 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=336) INFO 07-12 19:22:04 [gpu_model_runner.py:5037] Starting to load model casperhansen/mistral-large-instruct-2407-awq...
+(EngineCore pid=336) INFO 07-12 19:22:04 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(EngineCore pid=336) INFO 07-12 19:22:05 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(EngineCore pid=336) INFO 07-12 19:22:05 [flash_attn.py:636] Using FlashAttention version 2
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:   0% Completed | 0/14 [00:00<?, ?it/s]
+get_mempolicy: Operation not permitted
+(EngineCore pid=336) WARNING 07-12 19:22:06 [weight_utils.py:1149] GDS not enabled, setting `nogds=True`.
+(EngineCore pid=336) WARNING 07-12 19:22:06 [weight_utils.py:1149] For more information, see: https://github.com/foundation-model-stack/fastsafetensors?tab=readme-ov-file#basic-api-usages
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:   7% Completed | 1/14 [00:01<00:18,  1.42s/it]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  14% Completed | 2/14 [00:02<00:12,  1.02s/it]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  21% Completed | 3/14 [00:02<00:09,  1.11it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  29% Completed | 4/14 [00:03<00:08,  1.18it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  36% Completed | 5/14 [00:04<00:07,  1.22it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  43% Completed | 6/14 [00:05<00:06,  1.26it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  50% Completed | 7/14 [00:05<00:05,  1.29it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  57% Completed | 8/14 [00:06<00:04,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  64% Completed | 9/14 [00:07<00:03,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  71% Completed | 10/14 [00:08<00:03,  1.31it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  79% Completed | 11/14 [00:08<00:02,  1.32it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  86% Completed | 12/14 [00:09<00:01,  1.33it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader:  93% Completed | 13/14 [00:10<00:00,  1.34it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader: 100% Completed | 14/14 [00:10<00:00,  1.70it/s]
+(EngineCore pid=336) Loading safetensors using Fastsafetensor loader: 100% Completed | 14/14 [00:10<00:00,  1.32it/s]
+(EngineCore pid=336) 
+(EngineCore pid=336) INFO 07-12 19:22:16 [default_loader.py:397] Loading weights took 10.64 seconds
+(EngineCore pid=336) INFO 07-12 19:22:26 [gpu_model_runner.py:5132] Model loading took 60.51 GiB memory and 20.693229 seconds
+(EngineCore pid=336) INFO 07-12 19:22:44 [gpu_worker.py:466] Available KV cache memory: 20.96 GiB
+(EngineCore pid=336) INFO 07-12 19:22:44 [kv_cache_utils.py:1733] GPU KV cache size: 62,432 tokens
+(EngineCore pid=336) INFO 07-12 19:22:44 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 15.24x
+(EngineCore pid=336) INFO 07-12 19:22:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(EngineCore pid=336) INFO 07-12 19:22:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=336) INFO 07-12 19:22:44 [core.py:309] init engine (profile, create kv cache, warmup model) took 18.39 s
+(EngineCore pid=336) WARNING 07-12 19:22:44 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=336) WARNING 07-12 19:22:44 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=336) INFO 07-12 19:22:44 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=336) INFO 07-12 19:22:44 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 93.08it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](EngineCore pid=336) WARNING 07-12 19:22:45 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.22it/s, est. speed input: 382.73 toks/s, output: 1.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.22it/s, est. speed input: 382.73 toks/s, output: 1.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.22it/s, est. speed input: 382.73 toks/s, output: 1.22 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1273.70it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.24it/s, est. speed input: 1330.08 toks/s, output: 4.24 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.24it/s, est. speed input: 1330.08 toks/s, output: 4.24 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.23it/s, est. speed input: 1330.08 toks/s, output: 4.24 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1563.87it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1326.36 toks/s, output: 4.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1326.36 toks/s, output: 4.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1326.36 toks/s, output: 4.22 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1702.92it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1324.85 toks/s, output: 4.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1324.85 toks/s, output: 4.22 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.22it/s, est. speed input: 1324.85 toks/s, output: 4.22 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 1690.57it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:04<00:00,  4.99s/it, est. speed input: 62.91 toks/s, output: 20.04 toks/s]Processed prompts: 100%|██████████| 1/1 [00:04<00:00,  4.99s/it, est. speed input: 62.91 toks/s, output: 20.04 toks/s]Processed prompts: 100%|██████████| 1/1 [00:04<00:00,  4.99s/it, est. speed input: 62.91 toks/s, output: 20.04 toks/s]
+(EngineCore pid=336) INFO 07-12 19:22:51 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=336) INFO 07-12 19:22:51 [core.py:1289] Shutdown complete
+{
+  "timestamp": "2026-07-12T19:21:48",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "pcie": "gen5 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "nvmegds_warm",
+  "enforce_eager": true,
+  "load_format": "fastsafetensors",
+  "model_disk_gb": 64.9,
+  "llm_init_s": 50.57,
+  "ttft_first_ms": 832.5,
+  "ttft_warm_ms": 237.6,
+  "decode_tps": 20.8,
+  "effective_load_gbps": 1.28
+}
+Saved -> /tmp/results/results.jsonl
+=== [110b] step 4: raw disk read (cold) ===
+[run.sh] page cache dropped
+GPU    : NVIDIA RTX PRO 6000 Blackwell Server Edition | PCIe gen5 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : disk | label: nvmegds_disk_cold
+{
+  "timestamp": "2026-07-12T19:22:57",
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "pcie": "gen5 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "disk",
+  "label": "nvmegds_disk_cold",
+  "enforce_eager": false,
+  "load_format": "auto",
+  "model_disk_gb": 64.9,
+  "disk_read_s": 44.72,
+  "disk_read_gbps": 1.45
+}
+Saved -> /tmp/results/results.jsonl
+=== [110b] done. results in ~/results/results.jsonl ===
