@@ -121,6 +121,55 @@ PCIe-P2P passthrough.
 instances. It requires bare-metal (e.g. AWS `.metal`, OCI bare-metal shapes, Spheron
 bare-metal nodes) where `gdscheck -p` reports `NVMe : Supported` and `use_pci_p2pdma : true`.
 
+### What GDS actually changes — the data path
+
+**Normal loading (what every run in this experiment did):**
+
+```
+NVMe SSD ──► CPU RAM (bounce buffer) ──► GPU VRAM
+```
+
+The CPU stages every byte in a system-RAM buffer, then a second copy pushes it to the
+GPU. Two hops, CPU-mediated. When cuFile logs `nogds=True`, this is the path it uses.
+
+**Real GDS:**
+
+```
+NVMe SSD ──────── direct DMA over PCIe ────────► GPU VRAM
+```
+
+The GPU's DMA engine reads straight from the SSD; the CPU and its RAM are bypassed
+entirely. One hop, zero-copy. This is the path `use_pci_p2pdma: true` would enable.
+
+### How to get real GDS
+
+1. Provision a **bare-metal** GPU instance with **local NVMe** (no hypervisor between the
+   GPU and the drive): AWS `.metal`, OCI bare-metal GPU shapes, Spheron/CoreWeave bare-metal.
+2. On boot, verify: `gdscheck -p` must show `NVMe : Supported` **and** `use_pci_p2pdma : true`.
+   (If it shows `compat` / `false`, GDS will silently disable itself — as it did here.)
+3. Run the **unchanged** `eager+fst` command below — with a real path, cuFile logs GDS
+   *enabled* instead of `nogds=True`. No code change is needed; the loader auto-detects.
+
+### What difference it would make — and the honest caveat
+
+GDS accelerates **only the disk-read portion** of the cold start; it does not touch the
+~110–190 s engine-init/compile floor. So its upside is bounded by how much of the cold
+start is disk:
+
+| 110B cold start | Disk portion | Engine floor | GDS upside |
+|---|---|---|---|
+| Slow virtio (0.12 GB/s) | ~537 s | ~113 s | Large — disk dominates |
+| Local NVMe, no GDS | ~26 s | ~188 s | **Small — disk is already tiny** |
+
+The nuance worth stating: **GDS helps most exactly where fast NVMe already helps** — and
+once storage is fast, the disk portion is already small, so GDS's benefit to *single-stream*
+cold-start loading is modest. Its real value appears at **scale** (many concurrent model
+loads, where the CPU bounce buffer and RAM bandwidth become the bottleneck) and in
+**freeing CPU/RAM** for other work during load. This experiment's data suggests that for
+single-instance cold starts, **storage locality + eager mode capture most of the win, and
+snapshot/restore (CRIU / `cuda-checkpoint`) — which erases the engine floor — is the
+larger remaining lever than GDS.**
+
 ---
 
 ## Running it
