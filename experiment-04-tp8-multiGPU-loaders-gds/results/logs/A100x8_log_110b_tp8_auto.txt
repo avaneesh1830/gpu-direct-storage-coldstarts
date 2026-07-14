@@ -1,0 +1,494 @@
+=== [110b] step 1: first load (downloads if not cached) ===
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (0.0 GB on disk, 0 shards)
+Mode   : load | label: tp8_auto_first_download
+INFO 07-14 18:07:55 [utils.py:278] non-default args: {'dtype': 'float16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'casperhansen/mistral-large-instruct-2407-awq'}
+WARNING 07-14 18:07:55 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:07:55 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:08:10 [model.py:617] Resolved architecture: MistralForCausalLM
+INFO 07-14 18:08:10 [model.py:1752] Using max model len 4096
+INFO 07-14 18:08:10 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-14 18:08:10 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/14 [00:00<?, ?it/s]Parse safetensors files:   7%|▋         | 1/14 [00:00<00:02,  6.08it/s]Parse safetensors files:  36%|███▌      | 5/14 [00:00<00:00, 21.70it/s]Parse safetensors files: 100%|██████████| 14/14 [00:00<00:00, 52.60it/s]
+INFO 07-14 18:08:11 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-14 18:08:11 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-14 18:08:11 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-14 18:08:11 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-14 18:08:11 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-14 18:08:11 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=684) INFO 07-14 18:08:13 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='casperhansen/mistral-large-instruct-2407-awq', speculative_config=None, tokenizer='casperhansen/mistral-large-instruct-2407-awq', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=casperhansen/mistral-large-instruct-2407-awq, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=684) WARNING 07-14 18:08:13 [multiproc_executor.py:1029] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+(EngineCore pid=684) INFO 07-14 18:08:13 [multiproc_executor.py:139] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.17.0.2 (local), world_size=8, local_world_size=8
+(Worker pid=690) INFO 07-14 18:08:18 [parallel_state.py:1422] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=691) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=696) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=697) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=692) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=694) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=695) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=693) INFO 07-14 18:08:19 [parallel_state.py:1422] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:51005 backend=nccl
+(Worker pid=690) INFO 07-14 18:08:21 [pynccl.py:113] vLLM is using nccl==2.30.5
+(Worker pid=690) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=692) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=695) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=696) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=697) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=694) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=691) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=693) WARNING 07-14 18:08:23 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=690) INFO 07-14 18:08:23 [cuda_communicator.py:232] Using ['CUSTOM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['NCCL_SYMM_MEM', 'QUICK_REDUCE', 'FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=690) INFO 07-14 18:08:23 [parallel_state.py:1735] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=690) INFO 07-14 18:08:23 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=690) INFO 07-14 18:08:24 [gpu_model_runner.py:5037] Starting to load model casperhansen/mistral-large-instruct-2407-awq...
+(Worker_TP2 pid=692) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=690) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP1 pid=691) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP7 pid=697) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP4 pid=694) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=690) INFO 07-14 18:08:24 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(Worker_TP0 pid=690) INFO 07-14 18:08:24 [flash_attn.py:636] Using FlashAttention version 2
+(Worker_TP3 pid=693) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP5 pid=695) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP6 pid=696) INFO 07-14 18:08:24 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP2 pid=692) INFO 07-14 18:08:59 [weight_utils.py:603] Time spent downloading weights for casperhansen/mistral-large-instruct-2407-awq: 34.686616 seconds
+(Worker_TP0 pid=690) INFO 07-14 18:09:00 [weight_utils.py:922] Filesystem type for checkpoints: EXT4. Checkpoint size: 60.44 GiB. Available RAM: 1728.60 GiB.
+(Worker_TP0 pid=690) INFO 07-14 18:09:00 [weight_utils.py:945] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:   0% Completed | 0/14 [00:00<?, ?it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:   7% Completed | 1/14 [00:00<00:02,  5.50it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  14% Completed | 2/14 [00:00<00:02,  5.24it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  21% Completed | 3/14 [00:00<00:02,  5.33it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  29% Completed | 4/14 [00:00<00:02,  4.89it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  36% Completed | 5/14 [00:01<00:01,  4.68it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  43% Completed | 6/14 [00:01<00:01,  4.60it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  50% Completed | 7/14 [00:01<00:01,  4.60it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  57% Completed | 8/14 [00:01<00:01,  4.47it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  64% Completed | 9/14 [00:01<00:01,  4.47it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  71% Completed | 10/14 [00:02<00:00,  4.47it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  79% Completed | 11/14 [00:02<00:00,  4.50it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  86% Completed | 12/14 [00:02<00:00,  4.61it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards:  93% Completed | 13/14 [00:02<00:00,  4.79it/s]
+(Worker_TP0 pid=690) Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:02<00:00,  4.99it/s]
+(Worker_TP0 pid=690) 
+(Worker_TP0 pid=690) INFO 07-14 18:09:03 [default_loader.py:397] Loading weights took 2.81 seconds
+(Worker_TP0 pid=690) INFO 07-14 18:09:05 [gpu_model_runner.py:5132] Model loading took 7.74 GiB memory and 40.646769 seconds
+(Worker_TP0 pid=690) INFO 07-14 18:09:09 [marlin_utils.py:437] Marlin kernel can achieve better performance for small size_n with experimental use_atomic_add feature. You can consider set environment variable VLLM_MARLIN_USE_ATOMIC_ADD to 1 if possible.
+(Worker_TP0 pid=690) INFO 07-14 18:09:22 [gpu_worker.py:466] Available KV cache memory: 62.1 GiB
+(EngineCore pid=684) INFO 07-14 18:09:22 [kv_cache_utils.py:1733] GPU KV cache size: 1,479,952 tokens
+(EngineCore pid=684) INFO 07-14 18:09:22 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 361.32x
+(Worker_TP1 pid=691) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=697) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP6 pid=696) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=693) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP0 pid=690) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=692) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP5 pid=695) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP4 pid=694) INFO 07-14 18:09:22 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=697) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP3 pid=693) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP1 pid=691) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP6 pid=696) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP0 pid=690) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP5 pid=695) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP2 pid=692) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP4 pid=694) INFO 07-14 18:09:23 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=684) INFO 07-14 18:09:23 [core.py:309] init engine (profile, create kv cache, warmup model) took 16.98 s
+(EngineCore pid=684) WARNING 07-14 18:09:24 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=684) WARNING 07-14 18:09:24 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=684) INFO 07-14 18:09:24 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=684) INFO 07-14 18:09:24 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 32.59it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](Worker_TP0 pid=690) WARNING 07-14 18:09:24 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  3.85it/s, est. speed input: 1210.21 toks/s, output: 3.85 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  3.85it/s, est. speed input: 1210.21 toks/s, output: 3.85 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  3.85it/s, est. speed input: 1210.21 toks/s, output: 3.85 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 740.13it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.65it/s, est. speed input: 3029.49 toks/s, output: 9.65 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.65it/s, est. speed input: 3029.49 toks/s, output: 9.65 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.63it/s, est. speed input: 3029.49 toks/s, output: 9.65 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 953.03it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.65it/s, est. speed input: 3029.29 toks/s, output: 9.65 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.65it/s, est. speed input: 3029.29 toks/s, output: 9.65 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.63it/s, est. speed input: 3029.29 toks/s, output: 9.65 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 887.50it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 11.05it/s, est. speed input: 3468.98 toks/s, output: 11.05 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 11.04it/s, est. speed input: 3468.98 toks/s, output: 11.05 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 933.31it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:06<00:00,  6.46s/it, est. speed input: 48.61 toks/s, output: 15.48 toks/s]Processed prompts: 100%|██████████| 1/1 [00:06<00:00,  6.46s/it, est. speed input: 48.61 toks/s, output: 15.48 toks/s]Processed prompts: 100%|██████████| 1/1 [00:06<00:00,  6.46s/it, est. speed input: 48.61 toks/s, output: 15.48 toks/s]
+(EngineCore pid=684) INFO 07-14 18:09:31 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=684) INFO 07-14 18:09:31 [core.py:1289] Shutdown complete
+(Worker_TP0 pid=690) INFO 07-14 18:09:31 [multiproc_executor.py:775] Parent process exited, terminating worker queues
+(Worker_TP0 pid=690) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP1 pid=691) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP2 pid=692) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP3 pid=693) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP5 pid=695) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP4 pid=694) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP7 pid=697) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP6 pid=696) INFO 07-14 18:09:31 [multiproc_executor.py:872] WorkerProc shutting down.
+[rank1]:[W714 18:09:33.357988177 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=163, addr=[localhost]:40224, remote=[localhost]:51005): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x775618513a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x77560ad885aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x77560ad85a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7755e6b5e59e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x77561902cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7756250a3aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x775625130a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank1]:[W714 18:09:33.359815686 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 1] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[rank6]:[W714 18:09:33.362324734 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=173, addr=[localhost]:40234, remote=[localhost]:51005): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x775618513a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x77560ad885aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x77560ad85a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7755e6b5e59e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x77561902cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7756250a3aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x775625130a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank6]:[W714 18:09:33.364189342 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 6] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[rank3]:[W714 18:09:33.388339696 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=167, addr=[localhost]:40270, remote=[localhost]:51005): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x775618513a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x77560ad885aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x77560ad85a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7755e6b5e59e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x77561902cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7756250a3aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x775625130a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank3]:[W714 18:09:34.390155513 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 3] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+{
+  "timestamp": "2026-07-14T18:07:46",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "tp8_auto_first_download",
+  "enforce_eager": true,
+  "load_format": "auto",
+  "tp_size": 8,
+  "model_disk_gb": 0.0,
+  "llm_init_s": 88.51,
+  "ttft_first_ms": 292.4,
+  "ttft_warm_ms": 101.0,
+  "decode_tps": 15.6
+}
+Saved -> /tmp/results/results.jsonl
+=== [110b] step 2: COLD load (page cache dropped) ===
+[run.sh] page cache dropped
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : load | label: tp8_auto_cold
+INFO 07-14 18:10:26 [utils.py:278] non-default args: {'dtype': 'float16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'casperhansen/mistral-large-instruct-2407-awq'}
+WARNING 07-14 18:10:26 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:10:26 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:10:48 [model.py:617] Resolved architecture: MistralForCausalLM
+INFO 07-14 18:10:48 [model.py:1752] Using max model len 4096
+INFO 07-14 18:10:50 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-14 18:10:50 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/14 [00:00<?, ?it/s]Parse safetensors files:   7%|▋         | 1/14 [00:00<00:01,  7.27it/s]Parse safetensors files:  21%|██▏       | 3/14 [00:00<00:00, 12.79it/s]Parse safetensors files: 100%|██████████| 14/14 [00:00<00:00, 44.02it/s]
+INFO 07-14 18:10:50 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-14 18:10:50 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-14 18:10:50 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-14 18:10:50 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-14 18:10:50 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-14 18:10:50 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=580) INFO 07-14 18:10:52 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='casperhansen/mistral-large-instruct-2407-awq', speculative_config=None, tokenizer='casperhansen/mistral-large-instruct-2407-awq', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=casperhansen/mistral-large-instruct-2407-awq, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=580) WARNING 07-14 18:10:52 [multiproc_executor.py:1029] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+(EngineCore pid=580) INFO 07-14 18:10:52 [multiproc_executor.py:139] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.17.0.2 (local), world_size=8, local_world_size=8
+(Worker pid=597) INFO 07-14 18:10:55 [parallel_state.py:1422] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=603) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=602) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=605) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=600) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=601) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=599) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=604) INFO 07-14 18:10:56 [parallel_state.py:1422] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:40643 backend=nccl
+(Worker pid=597) INFO 07-14 18:11:03 [pynccl.py:113] vLLM is using nccl==2.30.5
+(Worker pid=599) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=604) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=601) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=602) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=600) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=605) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=603) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=597) WARNING 07-14 18:11:05 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=597) INFO 07-14 18:11:05 [cuda_communicator.py:232] Using ['CUSTOM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['NCCL_SYMM_MEM', 'QUICK_REDUCE', 'FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=597) INFO 07-14 18:11:05 [parallel_state.py:1735] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=597) INFO 07-14 18:11:05 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=597) INFO 07-14 18:11:05 [gpu_model_runner.py:5037] Starting to load model casperhansen/mistral-large-instruct-2407-awq...
+(Worker_TP6 pid=604) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP5 pid=603) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP7 pid=605) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP2 pid=600) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=597) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP1 pid=599) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP4 pid=602) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP3 pid=601) INFO 07-14 18:11:06 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=597) INFO 07-14 18:11:07 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(Worker_TP0 pid=597) INFO 07-14 18:11:07 [flash_attn.py:636] Using FlashAttention version 2
+(Worker_TP0 pid=597) INFO 07-14 18:11:08 [weight_utils.py:922] Filesystem type for checkpoints: EXT4. Checkpoint size: 60.44 GiB. Available RAM: 1733.81 GiB.
+(Worker_TP0 pid=597) INFO 07-14 18:11:08 [weight_utils.py:945] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:   0% Completed | 0/14 [00:00<?, ?it/s]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:   7% Completed | 1/14 [00:00<00:10,  1.21it/s]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  14% Completed | 2/14 [00:02<00:13,  1.16s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  21% Completed | 3/14 [00:03<00:14,  1.27s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  29% Completed | 4/14 [00:05<00:13,  1.34s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  36% Completed | 5/14 [00:06<00:12,  1.40s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  43% Completed | 6/14 [00:08<00:11,  1.45s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  50% Completed | 7/14 [00:09<00:10,  1.51s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  57% Completed | 8/14 [00:11<00:10,  1.67s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  64% Completed | 9/14 [00:13<00:08,  1.69s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  71% Completed | 10/14 [00:15<00:06,  1.66s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  79% Completed | 11/14 [00:16<00:04,  1.61s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  86% Completed | 12/14 [00:18<00:03,  1.68s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards:  93% Completed | 13/14 [00:20<00:01,  1.69s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:20<00:00,  1.28s/it]
+(Worker_TP0 pid=597) Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:20<00:00,  1.46s/it]
+(Worker_TP0 pid=597) 
+(Worker_TP0 pid=597) INFO 07-14 18:11:28 [default_loader.py:397] Loading weights took 20.50 seconds
+(Worker_TP0 pid=597) INFO 07-14 18:11:31 [gpu_model_runner.py:5132] Model loading took 7.74 GiB memory and 24.127196 seconds
+(Worker_TP0 pid=597) INFO 07-14 18:11:40 [marlin_utils.py:437] Marlin kernel can achieve better performance for small size_n with experimental use_atomic_add feature. You can consider set environment variable VLLM_MARLIN_USE_ATOMIC_ADD to 1 if possible.
+(Worker_TP0 pid=597) INFO 07-14 18:11:53 [gpu_worker.py:466] Available KV cache memory: 62.1 GiB
+(EngineCore pid=580) INFO 07-14 18:11:54 [kv_cache_utils.py:1733] GPU KV cache size: 1,479,952 tokens
+(EngineCore pid=580) INFO 07-14 18:11:54 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 361.32x
+(Worker_TP5 pid=603) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP0 pid=597) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP6 pid=604) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=605) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=600) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=599) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP4 pid=602) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=601) INFO 07-14 18:11:54 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP4 pid=602) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP0 pid=597) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP7 pid=605) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP3 pid=601) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP5 pid=603) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP6 pid=604) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP1 pid=599) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP2 pid=600) INFO 07-14 18:11:54 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=580) INFO 07-14 18:11:54 [core.py:309] init engine (profile, create kv cache, warmup model) took 23.71 s
+(EngineCore pid=580) WARNING 07-14 18:11:55 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=580) WARNING 07-14 18:11:55 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=580) INFO 07-14 18:11:55 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=580) INFO 07-14 18:11:55 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 45.80it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](Worker_TP0 pid=597) WARNING 07-14 18:11:56 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.51it/s, est. speed input: 472.68 toks/s, output: 1.51 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.51it/s, est. speed input: 472.68 toks/s, output: 1.51 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.50it/s, est. speed input: 472.68 toks/s, output: 1.51 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 637.34it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.64it/s, est. speed input: 3026.67 toks/s, output: 9.64 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.64it/s, est. speed input: 3026.67 toks/s, output: 9.64 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.62it/s, est. speed input: 3026.67 toks/s, output: 9.64 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 791.83it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 10.14it/s, est. speed input: 3182.97 toks/s, output: 10.14 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 10.13it/s, est. speed input: 3182.97 toks/s, output: 10.14 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 871.45it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 11.20it/s, est. speed input: 3518.22 toks/s, output: 11.20 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 11.19it/s, est. speed input: 3518.22 toks/s, output: 11.20 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 844.94it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:07<00:00,  7.02s/it, est. speed input: 44.74 toks/s, output: 14.25 toks/s]Processed prompts: 100%|██████████| 1/1 [00:07<00:00,  7.02s/it, est. speed input: 44.74 toks/s, output: 14.25 toks/s]Processed prompts: 100%|██████████| 1/1 [00:07<00:00,  7.02s/it, est. speed input: 44.74 toks/s, output: 14.25 toks/s]
+(EngineCore pid=580) INFO 07-14 18:12:03 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=580) INFO 07-14 18:12:03 [core.py:1289] Shutdown complete
+(Worker_TP1 pid=599) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP0 pid=597) INFO 07-14 18:12:03 [multiproc_executor.py:775] Parent process exited, terminating worker queues
+(Worker_TP3 pid=601) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP5 pid=603) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP6 pid=604) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP2 pid=600) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP0 pid=597) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP4 pid=602) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP7 pid=605) INFO 07-14 18:12:03 [multiproc_executor.py:872] WorkerProc shutting down.
+{
+  "timestamp": "2026-07-14T18:09:49",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "tp8_auto_cold",
+  "enforce_eager": true,
+  "load_format": "auto",
+  "tp_size": 8,
+  "model_disk_gb": 64.9,
+  "llm_init_s": 89.67,
+  "ttft_first_ms": 688.5,
+  "ttft_warm_ms": 99.0,
+  "decode_tps": 14.3,
+  "effective_load_gbps": 0.72
+}
+Saved -> /tmp/results/results.jsonl
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/weakref.py", line 666, in _exitfunc
+    f()
+  File "/usr/lib/python3.12/weakref.py", line 590, in __call__
+    return info.func(*info.args, **(info.kwargs or {}))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/library.py", line 628, in _del_library
+    _clear_torch_ops_cache(op_defs)
+  File "/usr/local/lib/python3.12/dist-packages/torch/library.py", line 593, in _clear_torch_ops_cache
+    if not hasattr(namespace, name):
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1383, in __getattr__
+    op, overload_names = _get_packet(qualified_op_name, module_name)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1408, in _get_packet
+    op, overload_names = torch._C._jit_get_operation(qualname)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xfe in position 180: invalid start byte
+=== [110b] step 3: WARM load (weights in page cache) ===
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : load | label: tp8_auto_warm
+INFO 07-14 18:12:19 [utils.py:278] non-default args: {'dtype': 'float16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'casperhansen/mistral-large-instruct-2407-awq'}
+WARNING 07-14 18:12:19 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:12:19 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:12:31 [model.py:617] Resolved architecture: MistralForCausalLM
+INFO 07-14 18:12:31 [model.py:1752] Using max model len 4096
+INFO 07-14 18:12:31 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-14 18:12:31 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/14 [00:00<?, ?it/s]Parse safetensors files:   7%|▋         | 1/14 [00:00<00:01,  7.86it/s]Parse safetensors files: 100%|██████████| 14/14 [00:00<00:00, 68.86it/s]
+INFO 07-14 18:12:32 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-14 18:12:32 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-14 18:12:32 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-14 18:12:32 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-14 18:12:32 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-14 18:12:32 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=578) INFO 07-14 18:12:33 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='casperhansen/mistral-large-instruct-2407-awq', speculative_config=None, tokenizer='casperhansen/mistral-large-instruct-2407-awq', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=casperhansen/mistral-large-instruct-2407-awq, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=578) WARNING 07-14 18:12:33 [multiproc_executor.py:1029] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+(EngineCore pid=578) INFO 07-14 18:12:33 [multiproc_executor.py:139] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.17.0.2 (local), world_size=8, local_world_size=8
+(Worker pid=584) INFO 07-14 18:12:37 [parallel_state.py:1422] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=586) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=604) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=605) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=595) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=585) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=603) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=602) INFO 07-14 18:12:38 [parallel_state.py:1422] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:40331 backend=nccl
+(Worker pid=584) INFO 07-14 18:12:39 [pynccl.py:113] vLLM is using nccl==2.30.5
+(Worker pid=595) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=584) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=586) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=585) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=604) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=603) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=605) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=602) WARNING 07-14 18:12:41 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=584) INFO 07-14 18:12:41 [cuda_communicator.py:232] Using ['CUSTOM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['NCCL_SYMM_MEM', 'QUICK_REDUCE', 'FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=584) INFO 07-14 18:12:41 [parallel_state.py:1735] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=584) INFO 07-14 18:12:41 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=584) INFO 07-14 18:12:41 [gpu_model_runner.py:5037] Starting to load model casperhansen/mistral-large-instruct-2407-awq...
+(Worker_TP7 pid=605) INFO 07-14 18:12:41 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP3 pid=595) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP4 pid=602) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP6 pid=604) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP1 pid=585) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP2 pid=586) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP5 pid=603) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=584) INFO 07-14 18:12:42 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=584) INFO 07-14 18:12:42 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(Worker_TP0 pid=584) INFO 07-14 18:12:42 [flash_attn.py:636] Using FlashAttention version 2
+(Worker_TP0 pid=584) INFO 07-14 18:12:43 [weight_utils.py:922] Filesystem type for checkpoints: EXT4. Checkpoint size: 60.44 GiB. Available RAM: 1733.46 GiB.
+(Worker_TP0 pid=584) INFO 07-14 18:12:43 [weight_utils.py:945] Auto-prefetch is disabled because the filesystem (EXT4) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:   0% Completed | 0/14 [00:00<?, ?it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:   7% Completed | 1/14 [00:00<00:03,  3.97it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  14% Completed | 2/14 [00:00<00:03,  3.43it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  21% Completed | 3/14 [00:00<00:03,  3.29it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  29% Completed | 4/14 [00:01<00:03,  3.16it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  36% Completed | 5/14 [00:01<00:02,  3.09it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  43% Completed | 6/14 [00:01<00:02,  3.00it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  50% Completed | 7/14 [00:02<00:02,  3.01it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  57% Completed | 8/14 [00:02<00:02,  2.88it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  64% Completed | 9/14 [00:03<00:01,  2.76it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  71% Completed | 10/14 [00:03<00:01,  2.70it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  79% Completed | 11/14 [00:03<00:01,  2.60it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  86% Completed | 12/14 [00:04<00:00,  2.57it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards:  93% Completed | 13/14 [00:04<00:00,  2.61it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:04<00:00,  3.36it/s]
+(Worker_TP0 pid=584) Loading safetensors checkpoint shards: 100% Completed | 14/14 [00:04<00:00,  2.98it/s]
+(Worker_TP0 pid=584) 
+(Worker_TP0 pid=584) INFO 07-14 18:12:48 [default_loader.py:397] Loading weights took 4.70 seconds
+(Worker_TP0 pid=584) INFO 07-14 18:12:50 [gpu_model_runner.py:5132] Model loading took 7.74 GiB memory and 7.888230 seconds
+(Worker_TP0 pid=584) INFO 07-14 18:12:54 [marlin_utils.py:437] Marlin kernel can achieve better performance for small size_n with experimental use_atomic_add feature. You can consider set environment variable VLLM_MARLIN_USE_ATOMIC_ADD to 1 if possible.
+(Worker_TP0 pid=584) INFO 07-14 18:13:07 [gpu_worker.py:466] Available KV cache memory: 62.1 GiB
+(EngineCore pid=578) INFO 07-14 18:13:07 [kv_cache_utils.py:1733] GPU KV cache size: 1,479,952 tokens
+(EngineCore pid=578) INFO 07-14 18:13:07 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 361.32x
+(Worker_TP1 pid=585) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP5 pid=603) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=605) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP0 pid=584) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=595) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=586) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP4 pid=602) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP6 pid=604) INFO 07-14 18:13:08 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=595) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP1 pid=585) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP2 pid=586) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP4 pid=602) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP0 pid=584) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP7 pid=605) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP5 pid=603) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP6 pid=604) INFO 07-14 18:13:08 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=578) INFO 07-14 18:13:08 [core.py:309] init engine (profile, create kv cache, warmup model) took 17.20 s
+(EngineCore pid=578) WARNING 07-14 18:13:09 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=578) WARNING 07-14 18:13:09 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=578) INFO 07-14 18:13:09 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=578) INFO 07-14 18:13:09 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 42.80it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](Worker_TP0 pid=584) WARNING 07-14 18:13:09 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  3.95it/s, est. speed input: 1240.97 toks/s, output: 3.95 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  3.95it/s, est. speed input: 1240.97 toks/s, output: 3.95 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  3.95it/s, est. speed input: 1240.97 toks/s, output: 3.95 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 701.86it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.64it/s, est. speed input: 3026.24 toks/s, output: 9.64 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.64it/s, est. speed input: 3026.24 toks/s, output: 9.64 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.62it/s, est. speed input: 3026.24 toks/s, output: 9.64 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 706.71it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.62it/s, est. speed input: 3021.65 toks/s, output: 9.62 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.62it/s, est. speed input: 3021.65 toks/s, output: 9.62 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  9.60it/s, est. speed input: 3021.65 toks/s, output: 9.62 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 714.29it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 11.16it/s, est. speed input: 3506.95 toks/s, output: 11.17 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 11.15it/s, est. speed input: 3506.95 toks/s, output: 11.17 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 697.42it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:06<00:00,  6.80s/it, est. speed input: 46.20 toks/s, output: 14.71 toks/s]Processed prompts: 100%|██████████| 1/1 [00:06<00:00,  6.80s/it, est. speed input: 46.20 toks/s, output: 14.71 toks/s]Processed prompts: 100%|██████████| 1/1 [00:06<00:00,  6.80s/it, est. speed input: 46.20 toks/s, output: 14.71 toks/s]
+(EngineCore pid=578) INFO 07-14 18:13:16 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=578) INFO 07-14 18:13:16 [core.py:1289] Shutdown complete
+(Worker_TP0 pid=584) INFO 07-14 18:13:16 [multiproc_executor.py:775] Parent process exited, terminating worker queues
+(Worker_TP5 pid=603) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP4 pid=602) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP2 pid=586) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP6 pid=604) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP3 pid=595) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP0 pid=584) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP7 pid=605) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP1 pid=585) INFO 07-14 18:13:16 [multiproc_executor.py:872] WorkerProc shutting down.
+{
+  "timestamp": "2026-07-14T18:12:10",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "tp8_auto_warm",
+  "enforce_eager": true,
+  "load_format": "auto",
+  "tp_size": 8,
+  "model_disk_gb": 64.9,
+  "llm_init_s": 50.36,
+  "ttft_first_ms": 278.9,
+  "ttft_warm_ms": 101.1,
+  "decode_tps": 14.8,
+  "effective_load_gbps": 1.29
+}
+Saved -> /tmp/results/results.jsonl
+=== [110b] step 4: raw disk read (cold) ===
+[run.sh] page cache dropped
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : casperhansen/mistral-large-instruct-2407-awq (64.9 GB on disk, 14 shards)
+Mode   : disk | label: tp8_auto_disk_cold
+{
+  "timestamp": "2026-07-14T18:13:32",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "110b",
+  "model_id": "casperhansen/mistral-large-instruct-2407-awq",
+  "quant": "awq_marlin",
+  "mode": "disk",
+  "label": "tp8_auto_disk_cold",
+  "enforce_eager": false,
+  "load_format": "auto",
+  "tp_size": 1,
+  "model_disk_gb": 64.9,
+  "disk_read_s": 17.21,
+  "disk_read_gbps": 3.77
+}
+Saved -> /tmp/results/results.jsonl
+=== [110b] done. results in ~/results/results.jsonl ===

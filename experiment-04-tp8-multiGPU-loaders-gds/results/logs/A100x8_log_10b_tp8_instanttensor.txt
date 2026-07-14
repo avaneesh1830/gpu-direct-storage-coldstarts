@@ -1,0 +1,33 @@
+=== [10b] step 1: first load (downloads if not cached) ===
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : Qwen/Qwen2.5-7B-Instruct (0.0 GB on disk, 0 shards)
+Mode   : load | label: tp8_instanttensor_first_download
+INFO 07-14 18:33:06 [utils.py:278] non-default args: {'load_format': 'instanttensor', 'dtype': 'bfloat16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'enforce_eager': True, 'model': 'Qwen/Qwen2.5-7B-Instruct'}
+WARNING 07-14 18:33:06 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:33:06 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:33:20 [model.py:617] Resolved architecture: Qwen2ForCausalLM
+INFO 07-14 18:33:20 [model.py:1752] Using max model len 4096
+INFO 07-14 18:33:20 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Traceback (most recent call last):
+  File "/tmp/benchmark.py", line 207, in <module>
+    main()
+  File "/tmp/benchmark.py", line 191, in main
+    metrics = bench_load(model_id, quant, dtype, args.enforce_eager,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/benchmark.py", line 103, in bench_load
+    llm = LLM(**kwargs)
+          ^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/vllm/entrypoints/llm.py", line 349, in __init__
+    self.llm_engine = LLMEngine.from_engine_args(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/llm_engine.py", line 162, in from_engine_args
+    vllm_config = engine_args.create_engine_config(usage_context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/vllm/engine/arg_utils.py", line 2224, in create_engine_config
+    config = VllmConfig(
+             ^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/pydantic/_internal/_dataclasses.py", line 121, in __init__
+    s.__pydantic_validator__.validate_python(ArgsKwargs(args, kwargs), self_instance=s)
+pydantic_core._pydantic_core.ValidationError: 1 validation error for VllmConfig
+  Value error, Total number of attention heads (28) must be divisible by tensor parallel size (8). [type=value_error, input_value=ArgsKwargs((), {'model_co... 'shutdown_timeout': 0}), input_type=ArgsKwargs]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error

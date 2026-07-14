@@ -1,0 +1,485 @@
+=== [30b] step 1: first load (downloads if not cached) ===
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : Qwen/Qwen2.5-32B-Instruct-AWQ (19.3 GB on disk, 5 shards)
+Mode   : load | label: tp8_instanttensor_first_download
+INFO 07-14 18:42:29 [utils.py:278] non-default args: {'load_format': 'instanttensor', 'dtype': 'float16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'Qwen/Qwen2.5-32B-Instruct-AWQ'}
+WARNING 07-14 18:42:29 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:42:29 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:42:47 [model.py:617] Resolved architecture: Qwen2ForCausalLM
+INFO 07-14 18:42:47 [model.py:1752] Using max model len 4096
+INFO 07-14 18:42:49 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-14 18:42:49 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/5 [00:00<?, ?it/s]Parse safetensors files:  20%|██        | 1/5 [00:00<00:00,  7.01it/s]Parse safetensors files: 100%|██████████| 5/5 [00:00<00:00, 25.16it/s]
+INFO 07-14 18:42:49 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-14 18:42:49 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-14 18:42:49 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-14 18:42:49 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-14 18:42:49 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-14 18:42:49 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=433) INFO 07-14 18:42:53 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='Qwen/Qwen2.5-32B-Instruct-AWQ', speculative_config=None, tokenizer='Qwen/Qwen2.5-32B-Instruct-AWQ', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=instanttensor, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=Qwen/Qwen2.5-32B-Instruct-AWQ, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=433) WARNING 07-14 18:42:53 [multiproc_executor.py:1029] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+(EngineCore pid=433) INFO 07-14 18:42:53 [multiproc_executor.py:139] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.17.0.2 (local), world_size=8, local_world_size=8
+(Worker pid=439) INFO 07-14 18:42:57 [parallel_state.py:1422] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=441) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=445) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=446) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=440) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=444) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=442) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=443) INFO 07-14 18:42:58 [parallel_state.py:1422] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:46895 backend=nccl
+(Worker pid=439) INFO 07-14 18:43:05 [pynccl.py:113] vLLM is using nccl==2.30.5
+(Worker pid=440) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=443) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=446) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=442) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=445) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=444) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=441) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=439) WARNING 07-14 18:43:06 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=439) INFO 07-14 18:43:07 [cuda_communicator.py:232] Using ['CUSTOM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['NCCL_SYMM_MEM', 'QUICK_REDUCE', 'FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=439) INFO 07-14 18:43:07 [parallel_state.py:1735] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=439) INFO 07-14 18:43:07 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=439) INFO 07-14 18:43:07 [gpu_model_runner.py:5037] Starting to load model Qwen/Qwen2.5-32B-Instruct-AWQ...
+(Worker_TP2 pid=441) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP6 pid=445) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP7 pid=446) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=439) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP4 pid=443) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP1 pid=440) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP5 pid=444) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP3 pid=442) INFO 07-14 18:43:08 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=439) INFO 07-14 18:43:08 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(Worker_TP0 pid=439) INFO 07-14 18:43:08 [flash_attn.py:636] Using FlashAttention version 2
+(Worker_TP0 pid=439) Loading safetensors using InstantTensor loader:   0% Completed | 0/1667 [00:00<?, ?it/s]
+(Worker_TP0 pid=439) Loading safetensors using InstantTensor loader:  42% Completed | 705/1667 [00:01<00:01, 702.43it/s]
+(Worker_TP0 pid=439) Loading safetensors using InstantTensor loader:  84% Completed | 1408/1667 [00:02<00:00, 491.53it/s]
+(Worker_TP0 pid=439) Loading safetensors using InstantTensor loader: 100% Completed | 1667/1667 [00:03<00:00, 455.02it/s]
+(Worker_TP0 pid=439) 
+(Worker_TP0 pid=439) INFO 07-14 18:43:15 [default_loader.py:397] Loading weights took 5.40 seconds
+(Worker_TP0 pid=439) INFO 07-14 18:43:16 [gpu_model_runner.py:5132] Model loading took 2.29 GiB memory and 8.024248 seconds
+(Worker_TP0 pid=439) INFO 07-14 18:43:26 [marlin_utils.py:437] Marlin kernel can achieve better performance for small size_n with experimental use_atomic_add feature. You can consider set environment variable VLLM_MARLIN_USE_ATOMIC_ADD to 1 if possible.
+(Worker_TP0 pid=439) INFO 07-14 18:43:38 [gpu_worker.py:466] Available KV cache memory: 67.39 GiB
+(EngineCore pid=433) INFO 07-14 18:43:39 [kv_cache_utils.py:1733] GPU KV cache size: 2,208,096 tokens
+(EngineCore pid=433) INFO 07-14 18:43:39 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 539.09x
+(Worker_TP0 pid=439) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=440) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=446) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP6 pid=445) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=441) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP5 pid=444) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=442) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP4 pid=443) INFO 07-14 18:43:39 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=440) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP0 pid=439) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP4 pid=443) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP5 pid=444) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP7 pid=446) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP2 pid=441) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP3 pid=442) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP6 pid=445) INFO 07-14 18:43:39 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=433) INFO 07-14 18:43:39 [core.py:309] init engine (profile, create kv cache, warmup model) took 22.74 s
+(EngineCore pid=433) WARNING 07-14 18:43:40 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=433) WARNING 07-14 18:43:40 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=433) INFO 07-14 18:43:40 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=433) INFO 07-14 18:43:40 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 30.23it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](Worker_TP0 pid=439) WARNING 07-14 18:43:40 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.75it/s, est. speed input: 457.98 toks/s, output: 1.75 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.75it/s, est. speed input: 457.98 toks/s, output: 1.75 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.75it/s, est. speed input: 457.98 toks/s, output: 1.75 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 198.07it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 19.70it/s, est. speed input: 5142.61 toks/s, output: 19.70 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 19.65it/s, est. speed input: 5142.61 toks/s, output: 19.70 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 316.60it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 20.14it/s, est. speed input: 5257.41 toks/s, output: 20.14 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 20.10it/s, est. speed input: 5257.41 toks/s, output: 20.14 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 395.69it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.01it/s, est. speed input: 5487.12 toks/s, output: 21.02 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 20.90it/s, est. speed input: 5487.12 toks/s, output: 21.02 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 361.48it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.30s/it, est. speed input: 49.24 toks/s, output: 18.87 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.30s/it, est. speed input: 49.24 toks/s, output: 18.87 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.30s/it, est. speed input: 49.24 toks/s, output: 18.87 toks/s]
+(EngineCore pid=433) INFO 07-14 18:43:46 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=433) INFO 07-14 18:43:46 [core.py:1289] Shutdown complete
+(Worker_TP0 pid=439) INFO 07-14 18:43:46 [multiproc_executor.py:775] Parent process exited, terminating worker queues
+(Worker_TP0 pid=439) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP1 pid=440) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP3 pid=442) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP6 pid=445) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP7 pid=446) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP4 pid=443) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP5 pid=444) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP2 pid=441) INFO 07-14 18:43:46 [multiproc_executor.py:872] WorkerProc shutting down.
+[W714 18:43:49.700322762 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=175, addr=[localhost]:33548, remote=[localhost]:46895): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x70bc7c5f9a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x70bc704b35aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x70bc704b0a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x70bc4c28959e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x70bc7e82cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x70bc8a908aa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x70bc8a995a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[W714 18:43:49.709031339 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 7] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+{
+  "timestamp": "2026-07-14T18:41:55",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "30b",
+  "model_id": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "tp8_instanttensor_first_download",
+  "enforce_eager": true,
+  "load_format": "instanttensor",
+  "tp_size": 8,
+  "model_disk_gb": 19.33,
+  "llm_init_s": 71.45,
+  "ttft_first_ms": 605.5,
+  "ttft_warm_ms": 53.5,
+  "decode_tps": 18.9,
+  "effective_load_gbps": 0.27
+}
+Saved -> /tmp/results/results.jsonl
+=== [30b] step 2: COLD load (page cache dropped) ===
+[run.sh] page cache dropped
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : Qwen/Qwen2.5-32B-Instruct-AWQ (19.3 GB on disk, 5 shards)
+Mode   : load | label: tp8_instanttensor_cold
+INFO 07-14 18:44:32 [utils.py:278] non-default args: {'load_format': 'instanttensor', 'dtype': 'float16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'Qwen/Qwen2.5-32B-Instruct-AWQ'}
+WARNING 07-14 18:44:32 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:44:32 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:44:51 [model.py:617] Resolved architecture: Qwen2ForCausalLM
+INFO 07-14 18:44:51 [model.py:1752] Using max model len 4096
+INFO 07-14 18:44:53 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-14 18:44:53 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/5 [00:00<?, ?it/s]Parse safetensors files:  20%|██        | 1/5 [00:00<00:00,  5.65it/s]Parse safetensors files: 100%|██████████| 5/5 [00:00<00:00, 28.23it/s]
+INFO 07-14 18:44:53 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-14 18:44:53 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-14 18:44:53 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-14 18:44:53 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-14 18:44:53 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-14 18:44:53 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=595) INFO 07-14 18:44:56 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='Qwen/Qwen2.5-32B-Instruct-AWQ', speculative_config=None, tokenizer='Qwen/Qwen2.5-32B-Instruct-AWQ', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=instanttensor, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=Qwen/Qwen2.5-32B-Instruct-AWQ, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=595) WARNING 07-14 18:44:56 [multiproc_executor.py:1029] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+(EngineCore pid=595) INFO 07-14 18:44:56 [multiproc_executor.py:139] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.17.0.2 (local), world_size=8, local_world_size=8
+(Worker pid=601) INFO 07-14 18:45:03 [parallel_state.py:1422] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=605) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=606) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=607) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=608) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=602) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=604) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=603) INFO 07-14 18:45:04 [parallel_state.py:1422] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:58841 backend=nccl
+(Worker pid=601) INFO 07-14 18:45:10 [pynccl.py:113] vLLM is using nccl==2.30.5
+(Worker pid=607) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=606) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=601) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=608) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=604) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=603) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=605) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=602) WARNING 07-14 18:45:12 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=601) INFO 07-14 18:45:12 [cuda_communicator.py:232] Using ['CUSTOM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['NCCL_SYMM_MEM', 'QUICK_REDUCE', 'FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=601) INFO 07-14 18:45:12 [parallel_state.py:1735] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=601) INFO 07-14 18:45:13 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=601) INFO 07-14 18:45:13 [gpu_model_runner.py:5037] Starting to load model Qwen/Qwen2.5-32B-Instruct-AWQ...
+(Worker_TP5 pid=606) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP6 pid=607) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP7 pid=608) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP4 pid=605) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP1 pid=602) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=601) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP2 pid=603) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP3 pid=604) INFO 07-14 18:45:13 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=601) INFO 07-14 18:45:14 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(Worker_TP0 pid=601) INFO 07-14 18:45:14 [flash_attn.py:636] Using FlashAttention version 2
+(Worker_TP0 pid=601) Loading safetensors using InstantTensor loader:   0% Completed | 0/1667 [00:00<?, ?it/s]
+(Worker_TP0 pid=601) Loading safetensors using InstantTensor loader:  47% Completed | 785/1667 [00:01<00:01, 771.55it/s]
+(Worker_TP0 pid=601) Loading safetensors using InstantTensor loader:  94% Completed | 1562/1667 [00:02<00:00, 774.70it/s]
+(Worker_TP0 pid=601) Loading safetensors using InstantTensor loader: 100% Completed | 1667/1667 [00:02<00:00, 719.67it/s]
+(Worker_TP0 pid=601) 
+(Worker_TP0 pid=601) INFO 07-14 18:45:19 [default_loader.py:397] Loading weights took 3.66 seconds
+(Worker_TP0 pid=601) INFO 07-14 18:45:21 [gpu_model_runner.py:5132] Model loading took 2.29 GiB memory and 7.173147 seconds
+(Worker_TP0 pid=601) INFO 07-14 18:45:30 [marlin_utils.py:437] Marlin kernel can achieve better performance for small size_n with experimental use_atomic_add feature. You can consider set environment variable VLLM_MARLIN_USE_ATOMIC_ADD to 1 if possible.
+(Worker_TP0 pid=601) INFO 07-14 18:45:43 [gpu_worker.py:466] Available KV cache memory: 67.39 GiB
+(EngineCore pid=595) INFO 07-14 18:45:44 [kv_cache_utils.py:1733] GPU KV cache size: 2,208,096 tokens
+(EngineCore pid=595) INFO 07-14 18:45:44 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 539.09x
+(Worker_TP0 pid=601) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP5 pid=606) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP4 pid=605) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=603) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=602) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP6 pid=607) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=608) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=604) INFO 07-14 18:45:44 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=603) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP7 pid=608) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP4 pid=605) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP6 pid=607) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP3 pid=604) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP0 pid=601) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP5 pid=606) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP1 pid=602) INFO 07-14 18:45:44 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=595) INFO 07-14 18:45:44 [core.py:309] init engine (profile, create kv cache, warmup model) took 23.03 s
+(EngineCore pid=595) WARNING 07-14 18:45:45 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=595) WARNING 07-14 18:45:45 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=595) INFO 07-14 18:45:45 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=595) INFO 07-14 18:45:45 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 31.84it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](Worker_TP0 pid=601) WARNING 07-14 18:45:45 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.78it/s, est. speed input: 465.13 toks/s, output: 1.78 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.78it/s, est. speed input: 465.13 toks/s, output: 1.78 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  1.78it/s, est. speed input: 465.13 toks/s, output: 1.78 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 183.30it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.08it/s, est. speed input: 5505.72 toks/s, output: 21.09 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.04it/s, est. speed input: 5505.72 toks/s, output: 21.09 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 289.86it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.95it/s, est. speed input: 5732.35 toks/s, output: 21.96 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.91it/s, est. speed input: 5732.35 toks/s, output: 21.96 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 392.69it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.92it/s, est. speed input: 5723.96 toks/s, output: 21.93 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.88it/s, est. speed input: 5723.96 toks/s, output: 21.93 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 414.58it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.31s/it, est. speed input: 49.18 toks/s, output: 18.84 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.31s/it, est. speed input: 49.18 toks/s, output: 18.84 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.31s/it, est. speed input: 49.18 toks/s, output: 18.84 toks/s]
+(EngineCore pid=595) INFO 07-14 18:45:51 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=595) INFO 07-14 18:45:51 [core.py:1289] Shutdown complete
+(Worker_TP6 pid=607) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP5 pid=606) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP3 pid=604) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP0 pid=601) INFO 07-14 18:45:51 [multiproc_executor.py:775] Parent process exited, terminating worker queues
+(Worker_TP1 pid=602) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP2 pid=603) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP0 pid=601) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP4 pid=605) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP7 pid=608) INFO 07-14 18:45:51 [multiproc_executor.py:872] WorkerProc shutting down.
+[W714 18:45:54.751213721 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=173, addr=[localhost]:35792, remote=[localhost]:58841): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7bb2609f9a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x7bb2544b35aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x7bb2544b0a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7bb23028959e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7bb262c2cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7bb26ecbcaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7bb26ed49a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank5]:[W714 18:45:54.751182883 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=171, addr=[localhost]:35778, remote=[localhost]:58841): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7bb2609f9a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x7bb2544b35aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x7bb2544b0a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7bb23028959e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7bb262c2cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7bb26ecbcaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7bb26ed49a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[W714 18:45:54.751205320 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=165, addr=[localhost]:35826, remote=[localhost]:58841): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7bb2609f9a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x7bb2544b35aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x7bb2544b0a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7bb23028959e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7bb262c2cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7bb26ecbcaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7bb26ed49a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank7]:[W714 18:45:54.751204083 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=175, addr=[localhost]:35808, remote=[localhost]:58841): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7bb2609f9a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x7bb2544b35aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x7bb2544b0a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x7bb23028959e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7bb262c2cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7bb26ecbcaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7bb26ed49a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank5]:[W714 18:45:54.786907962 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 5] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[rank7]:[W714 18:45:54.786935483 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 7] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[W714 18:45:54.786944665 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 2] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+[W714 18:45:54.786953958 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 6] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+{
+  "timestamp": "2026-07-14T18:43:58",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "30b",
+  "model_id": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "tp8_instanttensor_cold",
+  "enforce_eager": true,
+  "load_format": "instanttensor",
+  "tp_size": 8,
+  "model_disk_gb": 19.33,
+  "llm_init_s": 72.92,
+  "ttft_first_ms": 595.0,
+  "ttft_warm_ms": 50.5,
+  "decode_tps": 18.8,
+  "effective_load_gbps": 0.27
+}
+Saved -> /tmp/results/results.jsonl
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/weakref.py", line 666, in _exitfunc
+    f()
+  File "/usr/lib/python3.12/weakref.py", line 590, in __call__
+    return info.func(*info.args, **(info.kwargs or {}))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/library.py", line 628, in _del_library
+    _clear_torch_ops_cache(op_defs)
+  File "/usr/local/lib/python3.12/dist-packages/torch/library.py", line 593, in _clear_torch_ops_cache
+    if not hasattr(namespace, name):
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1383, in __getattr__
+    op, overload_names = _get_packet(qualified_op_name, module_name)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/torch/_ops.py", line 1408, in _get_packet
+    op, overload_names = torch._C._jit_get_operation(qualname)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'utf-8' codec can't decode byte 0xee in position 182: invalid continuation byte
+=== [30b] step 3: WARM load (weights in page cache) ===
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : Qwen/Qwen2.5-32B-Instruct-AWQ (19.3 GB on disk, 5 shards)
+Mode   : load | label: tp8_instanttensor_warm
+INFO 07-14 18:46:10 [utils.py:278] non-default args: {'load_format': 'instanttensor', 'dtype': 'float16', 'max_model_len': 4096, 'tensor_parallel_size': 8, 'enable_prefix_caching': False, 'gpu_memory_utilization': 0.9, 'disable_log_stats': True, 'quantization': 'awq_marlin', 'enforce_eager': True, 'model': 'Qwen/Qwen2.5-32B-Instruct-AWQ'}
+WARNING 07-14 18:46:10 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_VERSION
+WARNING 07-14 18:46:10 [envs.py:2086] Unknown vLLM environment variable detected: VLLM_FLASH_ATTN_SRC_DIR
+INFO 07-14 18:46:24 [model.py:617] Resolved architecture: Qwen2ForCausalLM
+INFO 07-14 18:46:24 [model.py:1752] Using max model len 4096
+INFO 07-14 18:46:24 [awq_marlin.py:268] The model is convertible to awq_marlin during runtime. Using awq_marlin kernel.
+INFO 07-14 18:46:24 [scheduler.py:239] Chunked prefill is enabled with max_num_batched_tokens=8192.
+Parse safetensors files:   0%|          | 0/5 [00:00<?, ?it/s]Parse safetensors files:  20%|██        | 1/5 [00:00<00:00,  7.39it/s]Parse safetensors files: 100%|██████████| 5/5 [00:00<00:00, 29.43it/s]
+INFO 07-14 18:46:25 [vllm.py:986] Asynchronous scheduling is enabled.
+WARNING 07-14 18:46:25 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+WARNING 07-14 18:46:25 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+INFO 07-14 18:46:25 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+INFO 07-14 18:46:25 [vllm.py:1243] Cudagraph is disabled under eager mode
+INFO 07-14 18:46:25 [compilation.py:312] Enabled custom fusions: norm_quant, act_quant
+(EngineCore pid=648) INFO 07-14 18:46:28 [core.py:112] Initializing a V1 LLM engine (v0.22.1+7b9cb5b7.dev) with config: model='Qwen/Qwen2.5-32B-Instruct-AWQ', speculative_config=None, tokenizer='Qwen/Qwen2.5-32B-Instruct-AWQ', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, tokenizer_revision=None, trust_remote_code=False, dtype=torch.float16, max_seq_len=4096, download_dir=None, load_format=instanttensor, tensor_parallel_size=8, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=awq_marlin, quantization_config=None, enforce_eager=True, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False), seed=0, served_model_name=Qwen/Qwen2.5-32B-Instruct-AWQ, enable_prefix_caching=False, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.NONE: 0>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['all'], 'ir_enable_torch_wrap': False, 'splitting_ops': [], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [8192], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.NONE: 0>, 'cudagraph_num_of_warmups': 0, 'cudagraph_capture_sizes': [], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': True, 'fuse_act_quant': True, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False}, 'max_cudagraph_capture_size': 0, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native']), enable_flashinfer_autotune=False, moe_backend='auto', linear_backend='auto')
+(EngineCore pid=648) WARNING 07-14 18:46:28 [multiproc_executor.py:1029] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+(EngineCore pid=648) INFO 07-14 18:46:28 [multiproc_executor.py:139] DP group leader: node_rank=0, node_rank_within_dp=0, master_addr=127.0.0.1, mq_connect_ip=172.17.0.2 (local), world_size=8, local_world_size=8
+(Worker pid=654) INFO 07-14 18:46:32 [parallel_state.py:1422] world_size=8 rank=0 local_rank=0 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=658) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=1 local_rank=1 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=672) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=4 local_rank=4 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=684) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=6 local_rank=6 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=673) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=5 local_rank=5 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=685) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=7 local_rank=7 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=670) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=2 local_rank=2 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=671) INFO 07-14 18:46:33 [parallel_state.py:1422] world_size=8 rank=3 local_rank=3 distributed_init_method=tcp://127.0.0.1:40907 backend=nccl
+(Worker pid=654) INFO 07-14 18:46:35 [pynccl.py:113] vLLM is using nccl==2.30.5
+(Worker pid=658) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=670) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=685) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=673) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=654) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=671) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=672) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=684) WARNING 07-14 18:46:37 [symm_mem.py:66] SymmMemCommunicator: Device capability 8.0 not supported, communicator is not available.
+(Worker pid=654) INFO 07-14 18:46:37 [cuda_communicator.py:232] Using ['CUSTOM', 'PYNCCL'] all-reduce backends (in dispatch order) for group 'tp:0' out of potential backends: ['NCCL_SYMM_MEM', 'QUICK_REDUCE', 'FLASHINFER', 'CUSTOM', 'SYMM_MEM', 'PYNCCL'].
+(Worker pid=654) INFO 07-14 18:46:37 [parallel_state.py:1735] rank 0 in world size 8 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, EP rank N/A, EPLB rank N/A
+(Worker pid=654) INFO 07-14 18:46:38 [topk_topp_sampler.py:45] Using FlashInfer for top-p & top-k sampling.
+(Worker_TP0 pid=654) INFO 07-14 18:46:38 [gpu_model_runner.py:5037] Starting to load model Qwen/Qwen2.5-32B-Instruct-AWQ...
+(Worker_TP4 pid=672) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP5 pid=673) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP2 pid=670) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP7 pid=685) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP3 pid=671) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP1 pid=658) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=654) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=654) INFO 07-14 18:46:38 [cuda.py:378] Using FLASH_ATTN attention backend out of potential backends: ['FLASH_ATTN', 'FLASHINFER', 'TRITON_ATTN', 'FLEX_ATTENTION'].
+(Worker_TP0 pid=654) INFO 07-14 18:46:38 [flash_attn.py:636] Using FlashAttention version 2
+(Worker_TP6 pid=684) INFO 07-14 18:46:38 [awq_marlin.py:436] Using MarlinLinearKernel for AWQMarlinLinearMethod
+(Worker_TP0 pid=654) Loading safetensors using InstantTensor loader:   0% Completed | 0/1667 [00:00<?, ?it/s]
+(Worker_TP0 pid=654) Loading safetensors using InstantTensor loader:  52% Completed | 871/1667 [00:01<00:00, 870.94it/s]
+(Worker_TP0 pid=654) Loading safetensors using InstantTensor loader: 100% Completed | 1667/1667 [00:01<00:00, 1243.46it/s]
+(Worker_TP0 pid=654) 
+(Worker_TP0 pid=654) INFO 07-14 18:46:42 [default_loader.py:397] Loading weights took 2.73 seconds
+(Worker_TP0 pid=654) INFO 07-14 18:46:44 [gpu_model_runner.py:5132] Model loading took 2.29 GiB memory and 4.868914 seconds
+(Worker_TP0 pid=654) INFO 07-14 18:46:47 [marlin_utils.py:437] Marlin kernel can achieve better performance for small size_n with experimental use_atomic_add feature. You can consider set environment variable VLLM_MARLIN_USE_ATOMIC_ADD to 1 if possible.
+(Worker_TP0 pid=654) INFO 07-14 18:46:59 [gpu_worker.py:466] Available KV cache memory: 67.39 GiB
+(EngineCore pid=648) INFO 07-14 18:47:00 [kv_cache_utils.py:1733] GPU KV cache size: 2,208,096 tokens
+(EngineCore pid=648) INFO 07-14 18:47:00 [kv_cache_utils.py:1734] Maximum concurrency for 4,096 tokens per request: 539.09x
+(Worker_TP4 pid=672) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP6 pid=684) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP7 pid=685) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP2 pid=670) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP5 pid=673) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP0 pid=654) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP1 pid=658) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP3 pid=671) INFO 07-14 18:47:00 [kernel_warmup.py:72] Skipping FlashInfer autotune because it is disabled.
+(Worker_TP5 pid=673) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP4 pid=672) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP6 pid=684) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP0 pid=654) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP3 pid=671) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP7 pid=685) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP2 pid=670) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(Worker_TP1 pid=658) INFO 07-14 18:47:01 [jit_monitor.py:54] Kernel JIT monitor activated — Triton JIT compilations during inference will be logged as warnings.
+(EngineCore pid=648) INFO 07-14 18:47:01 [core.py:309] init engine (profile, create kv cache, warmup model) took 16.41 s
+(EngineCore pid=648) WARNING 07-14 18:47:02 [vllm.py:1042] Enforce eager set, disabling torch.compile and CUDAGraphs. This is equivalent to setting -cc.mode=none -cc.cudagraph_mode=none
+(EngineCore pid=648) WARNING 07-14 18:47:02 [vllm.py:1067] Inductor compilation was disabled by user settings, optimizations settings that are only active during inductor compilation will be ignored.
+(EngineCore pid=648) INFO 07-14 18:47:02 [kernel.py:270] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(EngineCore pid=648) INFO 07-14 18:47:02 [vllm.py:1243] Cudagraph is disabled under eager mode
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 22.48it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s](Worker_TP0 pid=654) WARNING 07-14 18:47:02 [jit_monitor.py:103] Triton kernel JIT compilation during inference: _compute_slot_mapping_kernel. This causes a latency spike; consider extending warmup to cover this shape/config.
+Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.29it/s, est. speed input: 1120.13 toks/s, output: 4.29 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.29it/s, est. speed input: 1120.13 toks/s, output: 4.29 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00,  4.29it/s, est. speed input: 1120.13 toks/s, output: 4.29 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 193.29it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 19.92it/s, est. speed input: 5200.96 toks/s, output: 19.92 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 19.88it/s, est. speed input: 5200.96 toks/s, output: 19.92 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 361.36it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 20.97it/s, est. speed input: 5475.98 toks/s, output: 20.98 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 20.93it/s, est. speed input: 5475.98 toks/s, output: 20.98 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 440.16it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.25it/s, est. speed input: 5550.16 toks/s, output: 21.26 toks/s]Processed prompts: 100%|██████████| 1/1 [00:00<00:00, 21.20it/s, est. speed input: 5550.16 toks/s, output: 21.26 toks/s]
+Rendering prompts:   0%|          | 0/1 [00:00<?, ?it/s]Rendering prompts: 100%|██████████| 1/1 [00:00<00:00, 485.45it/s]
+Processed prompts:   0%|          | 0/1 [00:00<?, ?it/s, est. speed input: 0.00 toks/s, output: 0.00 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.21s/it, est. speed input: 50.09 toks/s, output: 19.19 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.21s/it, est. speed input: 50.09 toks/s, output: 19.19 toks/s]Processed prompts: 100%|██████████| 1/1 [00:05<00:00,  5.21s/it, est. speed input: 50.09 toks/s, output: 19.19 toks/s]
+(EngineCore pid=648) INFO 07-14 18:47:07 [core.py:1266] Shutdown initiated (timeout=0)
+(EngineCore pid=648) INFO 07-14 18:47:07 [core.py:1289] Shutdown complete
+(Worker_TP0 pid=654) INFO 07-14 18:47:07 [multiproc_executor.py:775] Parent process exited, terminating worker queues
+(Worker_TP2 pid=670) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP5 pid=673) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP1 pid=658) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP4 pid=672) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP0 pid=654) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP7 pid=685) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP3 pid=671) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+(Worker_TP6 pid=684) INFO 07-14 18:47:07 [multiproc_executor.py:872] WorkerProc shutting down.
+[rank6]:[W714 18:47:10.875540474 TCPStore.cpp:125] [c10d] recvValue failed on SocketImpl(fd=173, addr=[localhost]:54736, remote=[localhost]:40907): Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+Exception raised from recvBytes at /opt/pytorch/pytorch/torch/csrc/distributed/c10d/Utils.hpp:682 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x98 (0x7849c0820a48 in /usr/local/lib/python3.12/dist-packages/torch/lib/libc10.so)
+frame #1: <unknown function> + 0x64cb5aa (0x7849b2d885aa in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #2: c10d::TCPStore::check(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > const&) + 0x20a (0x7849b2d85a3a in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cpu.so)
+frame #3: c10d::ProcessGroupNCCL::HeartbeatMonitor::runLoop() + 0x3ee (0x78498eb5e59e in /usr/local/lib/python3.12/dist-packages/torch/lib/libtorch_cuda.so)
+frame #4: <unknown function> + 0xecdb4 (0x7849c142cdb4 in /lib/x86_64-linux-gnu/libstdc++.so.6)
+frame #5: <unknown function> + 0x9caa4 (0x7849cd3fbaa4 in /lib/x86_64-linux-gnu/libc.so.6)
+frame #6: __clone + 0x44 (0x7849cd488a64 in /lib/x86_64-linux-gnu/libc.so.6)
+
+[rank6]:[W714 18:47:10.877477599 ProcessGroupNCCL.cpp:1899] [PG ID 0 PG GUID 0 Rank 6] Failed to check the "should dump" flag on TCPStore, (maybe TCPStore server has shut down too early), with error: Failed to recv, got 0 bytes. Connection was likely closed. Did the remote server shutdown or crash?
+{
+  "timestamp": "2026-07-14T18:46:01",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "30b",
+  "model_id": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "quant": "awq_marlin",
+  "mode": "load",
+  "label": "tp8_instanttensor_warm",
+  "enforce_eager": true,
+  "load_format": "instanttensor",
+  "tp_size": 8,
+  "model_disk_gb": 19.33,
+  "llm_init_s": 51.93,
+  "ttft_first_ms": 280.2,
+  "ttft_warm_ms": 52.3,
+  "decode_tps": 19.2,
+  "effective_load_gbps": 0.37
+}
+Saved -> /tmp/results/results.jsonl
+=== [30b] step 4: raw disk read (cold) ===
+[run.sh] page cache dropped
+GPU    : NVIDIA A100-SXM4-80GB | PCIe gen4 x16
+Model  : Qwen/Qwen2.5-32B-Instruct-AWQ (19.3 GB on disk, 5 shards)
+Mode   : disk | label: tp8_instanttensor_disk_cold
+{
+  "timestamp": "2026-07-14T18:47:21",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "pcie": "gen4 x16",
+  "model_tier": "30b",
+  "model_id": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "quant": "awq_marlin",
+  "mode": "disk",
+  "label": "tp8_instanttensor_disk_cold",
+  "enforce_eager": false,
+  "load_format": "auto",
+  "tp_size": 1,
+  "model_disk_gb": 19.33,
+  "disk_read_s": 6.25,
+  "disk_read_gbps": 3.09
+}
+Saved -> /tmp/results/results.jsonl
+=== [30b] done. results in ~/results/results.jsonl ===

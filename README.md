@@ -22,7 +22,9 @@ Across four GPU generations (H100, H200, B300, RTX PRO 6000) loading models from
 Two different GPUs on identical storage produced identical cold starts (within 1%);
 one GPU on ~7× faster storage cut cold start ~3×. Once storage is fast, the remaining
 cost is a storage-independent **engine-init/compile floor (~110–190 s)** — the target
-for snapshot/restore techniques (CRIU / cuda-checkpoint). Separately, the **InstantTensor
+for snapshot/restore techniques (CRIU / cuda-checkpoint). GDS was tested on a full **8-GPU
+A100 DGX-class node** and *still* blocked (`use_pci_p2pdma: false`) — proving it is gated on
+**virtualization, not node size**; only bare-metal will unlock it. Separately, the **InstantTensor
 direct-I/O loader cut cold-cache weight loading up to ~9×** (110B: 72s → 8s) without GDS.
 True GDS could not be
 demonstrated on any *virtualized* cloud instance available (Experiment 03), which is
@@ -37,6 +39,7 @@ itself a reportable result: GDS requires bare-metal / PCIe-P2P-capable hardware.
 | [01](./experiment-01-rowracer-cpu-vs-gpu/) | RowRacer — CPU vs GPU CSV benchmark | pandas (CPU) vs cuDF/RAPIDS (GPU) on 1M/10M rows | GPU 24× faster on 10M rows |
 | [02](./experiment-02-llm-inference-bottleneck/) | LLM inference bottleneck | What limits token *generation* across GPU tiers? | Decode is **memory-bandwidth-bound** |
 | [03](./experiment-03-coldstart-loading-gds/) | Cold-start loading & GDS | What limits getting a model *serving*, and can GDS fix it? | Cold start is **storage-bound**; GDS blocked on virtualized cloud HW |
+| [04](./experiment-04-tp8-multiGPU-loaders-gds/) | TP8 multi-GPU, loader shoot-out, final GDS verdict | Does GDS work on a full 8-GPU DGX node? Does TP8 help cold start? Which loader wins? | GDS gated on **virtualization, not node size**; **TP8 hurts cold start**; **InstantTensor wins** |
 
 The research arc: Experiment 02 established that decode throughput scales with memory
 bandwidth, not compute. Experiment 03 pivots to the complementary question — what limits
@@ -66,10 +69,15 @@ for the detailed phase plan.
 ├── experiment-02-llm-inference-bottleneck/  # vLLM inference: TTFT/TPOT/throughput, H100/H200/B200
 │   ├── benchmark.py  Dockerfile  run_model.sh  SETUP_GUIDE.md
 │   └── results/                             # H100 / H200 / B200 result write-ups
-└── experiment-03-coldstart-loading-gds/     # cold-start decomposition + GDS investigation
-    ├── benchmark.py  run.sh  ROADMAP.md
-    ├── README.md                            # full methodology, results, and analysis
-    └── results/                             # per-GPU JSONL data + raw vLLM logs
+├── experiment-03-coldstart-loading-gds/     # cold-start decomposition + GDS investigation
+│   ├── benchmark.py  run.sh  ROADMAP.md
+│   ├── README.md                            # full methodology, results, and analysis
+│   └── results/                             # per-GPU JSONL data + raw vLLM logs
+└── experiment-04-tp8-multiGPU-loaders-gds/  # 8xA100 TP8, loader shoot-out, final GDS verdict
+    ├── benchmark.py  run.sh  preflight_check.sh
+    ├── README.md                            # findings + mistakes/solutions record
+    ├── ANALYSIS.md                          # full tables
+    └── results/                             # TP8 JSONL data + raw vLLM logs
 ```
 
 ## Stack
