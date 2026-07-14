@@ -96,6 +96,48 @@ proving device passthrough changed nothing. `gdscheck -p` reported `NVMe : compa
 `use_pci_p2pdma : false`: the AWS Nitro hypervisor does not expose PCIe peer-to-peer DMA
 to the guest, so cuFile disables GDS rather than run a pointless CPU-bounce compat path.
 
+## 8. InstantTensor loader vs default loader (H100, fast virtio ~2 GB/s, no GDS)
+
+A controlled ablation with **`enforce_eager` held constant in both configs** — only the
+loader changes — so the difference isolates the loader alone. Data: `results/H100_2_eager_ablation.jsonl`;
+InstantTensor 0.1.9 via `--load-format instanttensor` (a derived image = NGC vLLM +
+`pip install instanttensor`, since the base image lacks the package).
+
+**Cold-cache weight-load time** (from vLLM's `Loading weights took` log line — the loader's
+actual job, page cache dropped first):
+
+| Model | Default loader | InstantTensor | Speedup |
+|---|---|---|---|
+| 1B (3.1 GB) | 1.45 s | 1.52 s | 0.95× (fixed overhead dominates) |
+| 10B (15.2 GB) | 17.98 s | 2.44 s | **7.4×** |
+| 30B (19.3 GB) | 14.11 s | 3.81 s | **3.7×** |
+| 110B (64.9 GB) | 71.86 s | **8.21 s** | **8.8×** |
+
+**End-to-end cold start** (eager, no GDS):
+
+| Model | Default | InstantTensor | Speedup |
+|---|---|---|---|
+| 10B | 41.2 s | 26.3 s | 1.6× |
+| 110B | **105.9 s** | **41.8 s** | **2.5×** |
+
+**Why it wins:** the default loader reads *through the OS page cache* — on a cold cache it
+is disk-bound (~0.9 GB/s effective, 72 s for the 110B). InstantTensor uses **direct I/O +
+pipelined prefetching + concurrency**, reading the same 65 GB in 8.2 s (~8 GB/s). Two
+consequences:
+
+1. **It extracts far more from the same disk.** Single-stream `dd` measured ~2 GB/s on this
+   volume; InstantTensor's concurrent reads hit ~8 GB/s — so a single-stream disk benchmark
+   *underestimates* what a parallel loader can achieve.
+2. **Its load time is cache-independent** — cold ≈ warm (110B: 8.2 s cold vs 8.3 s warm),
+   because O_DIRECT bypasses the page cache. Its *cold* load (8.2 s) is even faster than the
+   default loader reading from *warm RAM* (10.8 s). For serverless cold starts (empty cache
+   by definition) this is the ideal property.
+
+Caveat: the win grows with model size; on the 1B it is a slight *loss* (InstantTensor's
+distributed/prefetch machinery has fixed setup overhead not amortized by tiny weights).
+This ran **without GDS** (box had none) — InstantTensor's direct-I/O path alone; with GDS
+on bare-metal it could go further.
+
 ## Key takeaways
 
 1. **Cold start is storage-bound** — identical GPUs+storage → identical cold starts; ~7× faster storage → ~3× faster cold start.
@@ -104,6 +146,7 @@ to the guest, so cuFile disables GDS rather than run a pointless CPU-bounce comp
 4. **~113 s warm floor** (compile + graphs + init) is storage-independent → snapshot/restore is the complement to GDS.
 5. **`enforce_eager` is a free lunch for large models** (−65 s startup, −3 % decode), a bad deal for small ones.
 6. **GDS needs bare-metal / PCIe-P2P hardware** — a local NVMe is necessary but not sufficient; virtualized cloud instances disable it.
+7. **InstantTensor's direct-I/O loader cuts cold-cache weight loading up to ~9×** (110B: 72 s → 8 s) and the end-to-end cold start ~2.5×, *without* GDS — by using concurrency + O_DIRECT to bypass the page cache and saturate the disk. This is the largest single lever found for cold-start loading on standard (non-bare-metal) cloud instances.
 
 ## Caveats (honest reporting)
 

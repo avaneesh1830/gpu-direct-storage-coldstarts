@@ -22,7 +22,9 @@ Across four GPU generations (H100, H200, B300, RTX PRO 6000) loading models from
 Two different GPUs on identical storage produced identical cold starts (within 1%);
 one GPU on ~7× faster storage cut cold start ~3×. Once storage is fast, the remaining
 cost is a storage-independent **engine-init/compile floor (~110–190 s)** — the target
-for snapshot/restore techniques (CRIU / cuda-checkpoint). True GDS could not be
+for snapshot/restore techniques (CRIU / cuda-checkpoint). Separately, the **InstantTensor
+direct-I/O loader cut cold-cache weight loading up to ~9×** (110B: 72s → 8s) without GDS.
+True GDS could not be
 demonstrated on any *virtualized* cloud instance available (Experiment 03), which is
 itself a reportable result: GDS requires bare-metal / PCIe-P2P-capable hardware.
 

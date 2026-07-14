@@ -140,7 +140,7 @@ def main():
     parser.add_argument("--enforce-eager", action="store_true",
                         help="skip CUDA graph capture (diff vs default isolates compile time)")
     parser.add_argument("--load-format", default="auto",
-                        choices=["auto", "fastsafetensors", "runai_streamer", "tensorizer"],
+                        choices=["auto", "fastsafetensors", "runai_streamer", "tensorizer", "instanttensor"],
                         help="fastsafetensors = GDS/cuFile path (needs NGC image or pip pkg)")
     parser.add_argument("--prompt-len", type=int, default=256)
     parser.add_argument("--gen-tokens", type=int, default=100)

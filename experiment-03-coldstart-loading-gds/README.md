@@ -30,6 +30,11 @@ scale-to-zero.
 
 **GDS could not be demonstrated on any available cloud instance** — see [GDS investigation](#gds-investigation).
 
+**The InstantTensor loader cut cold-cache weight loading up to ~9×** (110B: 72 s → 8 s)
+and the end-to-end cold start ~2.5×, *without* GDS — via direct I/O + concurrency that
+bypasses the page cache and saturates the disk. See [ANALYSIS.md §8](./ANALYSIS.md).
+This is the largest single loading lever found on standard (non-bare-metal) cloud hardware.
+
 ---
 
 ## Method
