@@ -138,16 +138,6 @@ distributed/prefetch machinery has fixed setup overhead not amortized by tiny we
 This ran **without GDS** (box had none) — InstantTensor's direct-I/O path alone; with GDS
 on bare-metal it could go further.
 
-## Key takeaways
-
-1. **Cold start is storage-bound** — identical GPUs+storage → identical cold starts; ~7× faster storage → ~3× faster cold start.
-2. **The loader is not the problem on slow storage** (~97 % disk-saturated). GDS/NVMe attacks exactly this.
-3. **~5 GB/s from page cache** shows the disk→VRAM path's ceiling: a 110B in ~13 s if storage keeps up.
-4. **~113 s warm floor** (compile + graphs + init) is storage-independent → snapshot/restore is the complement to GDS.
-5. **`enforce_eager` is a free lunch for large models** (−65 s startup, −3 % decode), a bad deal for small ones.
-6. **GDS needs bare-metal / PCIe-P2P hardware** — a local NVMe is necessary but not sufficient; virtualized cloud instances disable it.
-7. **InstantTensor's direct-I/O loader cuts cold-cache weight loading up to ~9×** (110B: 72 s → 8 s) and the end-to-end cold start ~2.5×, *without* GDS — by using concurrency + O_DIRECT to bypass the page cache and saturate the disk. This is the largest single lever found for cold-start loading on standard (non-bare-metal) cloud instances.
-
 ## 9. Three-loader comparison, and what GDS would add
 
 All three loaders measured on the same task — **cold-cache weight load of the 110B (64.9 GB)**,
@@ -200,6 +190,16 @@ a genuine multiplier. For a single model loading once, it is marginal on top of 
 delivered ~9× faster loading with no special hardware — more than GDS is projected to add on
 top of it. The larger remaining lever is not storage at all, but the **engine-init/compile
 floor** → CRIU / `cuda-checkpoint` (Phase 4).
+
+## Key takeaways
+
+1. **Cold start is storage-bound** — identical GPUs+storage → identical cold starts; ~7× faster storage → ~3× faster cold start.
+2. **The loader is not the problem on slow storage** (~97 % disk-saturated). GDS/NVMe attacks exactly this.
+3. **~5 GB/s from page cache** shows the disk→VRAM path's ceiling: a 110B in ~13 s if storage keeps up.
+4. **~113 s warm floor** (compile + graphs + init) is storage-independent → snapshot/restore is the complement to GDS.
+5. **`enforce_eager` is a free lunch for large models** (−65 s startup, −3 % decode), a bad deal for small ones.
+6. **GDS needs bare-metal / PCIe-P2P hardware** — a local NVMe is necessary but not sufficient; virtualized cloud instances disable it.
+7. **InstantTensor's direct-I/O loader cuts cold-cache weight loading up to ~9×** (110B: 72 s → 8 s) and the end-to-end cold start ~2.5×, *without* GDS — by using concurrency + O_DIRECT to bypass the page cache and saturate the disk. This is the largest single lever found for cold-start loading on standard (non-bare-metal) cloud instances.
 
 ## Caveats (honest reporting)
 
