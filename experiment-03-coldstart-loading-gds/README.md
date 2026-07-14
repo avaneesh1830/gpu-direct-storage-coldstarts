@@ -34,6 +34,9 @@ scale-to-zero.
 and the end-to-end cold start ~2.5×, *without* GDS — via direct I/O + concurrency that
 bypasses the page cache and saturates the disk. See [ANALYSIS.md §8](./ANALYSIS.md).
 This is the largest single loading lever found on standard (non-bare-metal) cloud hardware.
+It also **beat `fastsafetensors` by ~4x while running on slower storage** — concurrency, not
+raw disk speed, is what wins. Adding GDS on top is *estimated* to save only a few more
+seconds ([ANALYSIS.md §9](./ANALYSIS.md)), because the engine-init floor then dominates.
 
 ---
 

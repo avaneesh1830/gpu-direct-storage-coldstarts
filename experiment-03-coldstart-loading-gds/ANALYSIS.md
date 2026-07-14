@@ -148,6 +148,59 @@ on bare-metal it could go further.
 6. **GDS needs bare-metal / PCIe-P2P hardware** — a local NVMe is necessary but not sufficient; virtualized cloud instances disable it.
 7. **InstantTensor's direct-I/O loader cuts cold-cache weight loading up to ~9×** (110B: 72 s → 8 s) and the end-to-end cold start ~2.5×, *without* GDS — by using concurrency + O_DIRECT to bypass the page cache and saturate the disk. This is the largest single lever found for cold-start loading on standard (non-bare-metal) cloud instances.
 
+## 9. Three-loader comparison, and what GDS would add
+
+All three loaders measured on the same task — **cold-cache weight load of the 110B (64.9 GB)**,
+taken from vLLM's `Loading weights took` log line:
+
+| Loader | Storage | Load time | Effective bandwidth |
+|---|---|---|---|
+| default (`safetensors`) | virtio 0.12 GB/s | ~524 s | 0.12 GB/s |
+| `fastsafetensors` (`nogds`) | virtio 0.12 GB/s | 524 s | 0.12 GB/s |
+| default (`safetensors`) | virtio 2.0 GB/s | 71.9 s | 0.9 GB/s |
+| `fastsafetensors` (`nogds`) | local NVMe 2.8 GB/s | 32.7 s | 2.0 GB/s |
+| **`instanttensor`** | virtio 2.0 GB/s | **8.2 s** | **7.9 GB/s** |
+
+**The decisive result:** InstantTensor on *slower* storage (2.0 GB/s) loaded the 110B in
+**8.2 s**, while `fastsafetensors` on *faster* storage (2.8 GB/s local NVMe) took **32.7 s** —
+**~4× faster despite a storage disadvantage.**
+
+The reason is *concurrency*, not raw disk speed. `fastsafetensors` (in `nogds` mode) reads
+roughly single-stream and merely tracks the disk's sequential rate (2.8 GB/s disk → 2.0 GB/s
+effective). InstantTensor's pipelined, concurrent direct I/O extracts **~8 GB/s from a volume
+that single-stream `dd` clocked at only 2 GB/s** — i.e. a single-stream disk benchmark
+*understates* what a parallel loader can achieve. This also explains why the earlier
+`fastsafetensors` runs never impressed: they were pinned to the single-stream disk rate.
+
+### Estimated impact of adding GDS
+
+GDS changes the *path* (`NVMe → CPU RAM → GPU` becomes `NVMe → GPU` direct DMA); it does not
+change the *read strategy*. InstantTensor already does direct I/O with concurrency, so GDS
+would only remove the remaining CPU bounce-buffer copy on top of that.
+
+| 110B, bare-metal fast NVMe | Est. weight load | Est. end-to-end cold start |
+|---|---|---|
+| InstantTensor (direct I/O, no GDS) — *measured* | 8.2 s | 41.8 s |
+| InstantTensor **+ GDS** — *estimated* | ~3–5 s | ~37–39 s |
+
+**GDS's incremental benefit is projected to be small (~10 % of cold start) for single-stream
+loading**, for two reasons:
+
+1. InstantTensor already reads at ~8 GB/s. GDS mainly pays off once the **CPU bounce buffer**
+   becomes the bottleneck — which requires storage faster than InstantTensor is already extracting.
+2. Once the load falls to single-digit seconds, the **~33 s engine-init/compile floor dominates**
+   the cold start, and GDS cannot touch it. Halving an 8 s load only moves cold start ~42 s → ~38 s.
+
+**Where GDS *would* clearly matter** (outside this experiment's single-stream scope):
+**many concurrent model loads on one node**, where CPU-bounce-buffer and RAM bandwidth become
+a *shared* bottleneck. GDS's CPU bypass relieves that contention, so at fleet scale it could be
+a genuine multiplier. For a single model loading once, it is marginal on top of InstantTensor.
+
+**Conclusion:** for single-instance cold starts, a `pip install` + one flag (InstantTensor)
+delivered ~9× faster loading with no special hardware — more than GDS is projected to add on
+top of it. The larger remaining lever is not storage at all, but the **engine-init/compile
+floor** → CRIU / `cuda-checkpoint` (Phase 4).
+
 ## Caveats (honest reporting)
 
 - The `eager+fst` config ran cuFile with **GDS inactive** (`nogds=True`) on every box — it
@@ -157,3 +210,11 @@ on bare-metal it could go further.
   GPU-vs-storage effects are disentangled via the `disk_cold` rows, not GPU identity.
 - 110B on the 80 GB H100 leaves only ~3.5 GiB KV cache — fine for single-request benchmarking, not concurrency.
 - Reproducibility: repeated 1B baselines matched within ~2 % (H100, B300).
+- **The GDS figures in §9 are an ESTIMATE, not a measurement** — GDS never engaged on any
+  instance obtained (see §7). They are projected from the measured InstantTensor direct-I/O
+  numbers plus the known cost GDS removes (the CPU bounce-buffer copy). Treat as a
+  hypothesis to be tested on bare-metal hardware, not as a result.
+- The three-loader comparison in §9 spans different instances/storage (noted per row); the
+  InstantTensor-vs-default rows are same-box and fully controlled, while the
+  InstantTensor-vs-fastsafetensors comparison is cross-box (InstantTensor was on *slower*
+  storage, which strengthens rather than weakens its result).
