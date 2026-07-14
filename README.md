@@ -32,6 +32,20 @@ itself a reportable result: GDS requires bare-metal / PCIe-P2P-capable hardware.
 
 ---
 
+## Where this is going
+
+**GDS is blocked on every rentable cloud GPU** (all are VMs; see exp-03/04) — **and the data
+shows it would not help much anyway**: once a concurrent loader is used, weight loading is only
+~8 s of a 41.8 s cold start, while a **~33 s engine-init/compile floor** dominates and GDS
+cannot touch it.
+
+The remaining lever is **snapshot/restore** (CRIU + `cuda-checkpoint`), which skips engine init
+entirely and — unlike GDS — **works on ordinary VMs**. NVIDIA shipped exactly this as *Dynamo
+Snapshot* (v1.2, June 2026), reporting restores in 2.25–9 s.
+
+- [MENTOR_SUMMARY.md](./MENTOR_SUMMARY.md) — findings, the GDS verdict, and the proposed pivot
+- [PHASE4_PLAN.md](./PHASE4_PLAN.md) — the snapshot/restore experiment plan
+
 ## Experiments
 
 | # | Experiment | Question | Headline result |
