@@ -71,7 +71,11 @@ experiment-05-criu-checkpoint-restore/
 - **cuda-checkpoint binary:** `github.com/NVIDIA/cuda-checkpoint` →
   `bin/x86_64_Linux/cuda-checkpoint` (note the `_Linux` suffix) → put on `PATH`.
 - CRIU is Linux-only but works in ordinary VMs (unlike GDS — no bare metal needed).
-- The `Dockerfile` captures this whole toolchain.
+- The `Dockerfile` captures this whole toolchain. A pre-built image is published:
+  ```bash
+  docker pull avaneesh1830/criu-coldstart:latest
+  ```
+  (Rebuild locally with `docker build --platform linux/amd64 -t avaneesh1830/criu-coldstart:latest .`)
 
 ## How to run
 
