@@ -54,6 +54,7 @@ Snapshot* (v1.2, June 2026), reporting restores in 2.25–9 s.
 | [02](./experiment-02-llm-inference-bottleneck/) | LLM inference bottleneck | What limits token *generation* across GPU tiers? | Decode is **memory-bandwidth-bound** |
 | [03](./experiment-03-coldstart-loading-gds/) | Cold-start loading & GDS | What limits getting a model *serving*, and can GDS fix it? | Cold start is **storage-bound**; GDS blocked on virtualized cloud HW |
 | [04](./experiment-04-tp8-multiGPU-loaders-gds/) | TP8 multi-GPU, loader shoot-out, final GDS verdict | Does GDS work on a full 8-GPU DGX node? Does TP8 help cold start? Which loader wins? | GDS gated on **virtualization, not node size**; **TP8 hurts cold start**; **InstantTensor wins** |
+| [05](./experiment-05-criu-checkpoint-restore/) | CRIU checkpoint/restore (CPU → GPU) | Can we skip the engine-init floor by snapshotting a ready process and restoring it? | **Mechanism proven** incl. GPU VRAM via `cuda-checkpoint`; naive restore is **disk-bound** — the win needs vLLM + **image shrinking** (Stage 3) |
 
 The research arc: Experiment 02 established that decode throughput scales with memory
 bandwidth, not compute. Experiment 03 pivots to the complementary question — what limits
@@ -87,11 +88,16 @@ for the detailed phase plan.
 │   ├── benchmark.py  run.sh  ROADMAP.md
 │   ├── README.md                            # full methodology, results, and analysis
 │   └── results/                             # per-GPU JSONL data + raw vLLM logs
-└── experiment-04-tp8-multiGPU-loaders-gds/  # 8xA100 TP8, loader shoot-out, final GDS verdict
-    ├── benchmark.py  run.sh  preflight_check.sh
-    ├── README.md                            # findings + mistakes/solutions record
-    ├── ANALYSIS.md                          # full tables
-    └── results/                             # TP8 JSONL data + raw vLLM logs
+├── experiment-04-tp8-multiGPU-loaders-gds/  # 8xA100 TP8, loader shoot-out, final GDS verdict
+│   ├── benchmark.py  run.sh  preflight_check.sh
+│   ├── README.md                            # findings + mistakes/solutions record
+│   ├── ANALYSIS.md                          # full tables
+│   └── results/                             # TP8 JSONL data + raw vLLM logs
+└── experiment-05-criu-checkpoint-restore/   # CRIU checkpoint/restore, CPU → GPU (cuda-checkpoint)
+    ├── README.md  Dockerfile  STAGE3_PLAN.md
+    ├── LEARNINGS_CPU.md  LEARNINGS_GPU.md    # full teaching walkthroughs
+    ├── scripts/ (cpu/  gpu/)                 # counter + model checkpoint/restore scripts
+    └── results/                             # RESULTS_cpu.md, RESULTS_gpu.md
 ```
 
 ## Stack
