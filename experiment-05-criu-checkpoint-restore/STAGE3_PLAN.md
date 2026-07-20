@@ -48,34 +48,70 @@ they trigger cuda-checkpoint, and how they measure restore vs cold start.
 
 ---
 
+## Concrete mechanism (extracted from the Doubleword posts, 2026)
+
+The Cloudburst post is SGLang-specific and gives the actual recipe. Key facts:
+
+- **Image shrinking = `torch_memory_saver`.** Before checkpoint, SGLang *releases*
+  the weights AND KV cache from GPU (HTTP `POST /release_memory_occupation`). So
+  cuda-checkpoint + CRIU capture only the small CUDA/torch engine state, NOT the
+  weights. Image collapses **192 GB -> 6.6 GB**. After restore, weights are reloaded
+  by SGLang's own loader (`POST /restore_memory_occupation`). Weights are therefore
+  NOT in the image — they come back separately and fast.
+- **Their result (8x B200, NVMe Gen4): restore 9.6 s vs cold start 695 s** (warm 88 s).
+  Breakdown of the 9.6 s: container 3.0 s + CRIU/cuda-checkpoint 3.5 s + weight
+  reload 3.1 s (~38 GB/s). Restore is dominated by re-reading weights, not the image.
+- **cuda-checkpoint is driven explicitly** (driver 580+ for device migration):
+  ```
+  cuda-checkpoint --action lock       --pid $P   # quiesce (~0.3 ms)
+  cuda-checkpoint --action checkpoint --pid $P   # VRAM->host, close /dev/nvidia*, leaves nvidia-smi
+  #   ... criu dump ...
+  #   ... criu restore ...
+  cuda-checkpoint --action restore    --pid $P   # rebuild CUDA ctx, host->VRAM
+  cuda-checkpoint --action unlock     --pid $P   # resume kernels
+  ```
+  (CRIU's cuda_plugin.so can do lock+checkpoint / restore+unlock automatically, as in
+  our Stage 2; the blog drives it explicitly for control.)
+- **Environment prep to make an engine checkpointable (the real engineering):**
+  - `HF_HUB_OFFLINE=1` — no live outbound socket (we already hit this in Stage 1/2).
+  - Bind all TCP listeners to `0.0.0.0` or `localhost`; `GLOO_SOCKET_IFNAME=lo`.
+  - `TORCHINDUCTOR_COMPILE_THREADS=1` — stray compile threads else hold CUDA contexts.
+  - Disable io_uring: `sudo sysctl -w kernel.io_uring_disabled=2` (CRIU can't dump it).
+  - Persist compile caches across restore: `~/.cache/flashinfer`, `TRITON_HOME`,
+    `TORCHINDUCTOR_CACHE_DIR`, `~/.cache/tvm-ffi`.
+  - After restore, a helper hits `/restore_memory_occupation` to reload weights.
+- **Checkpoint-time speedups (optional):** Transparent Huge Pages (3.9 s -> 1.6 s for
+  8.5 GB), pre-allocated staging buffer via LD_PRELOAD, async unmap. Bottleneck is
+  zeroing anonymous pages in `mmap(MAP_POPULATE)`, not PCIe transfer.
+
+**Implication for our plan:** use **SGLang** (not vLLM) to match the blog and get
+`torch_memory_saver` + the `/release`+`/restore_memory_occupation` endpoints for free.
+The image-shrink is an engine feature, not a CRIU trick.
+
+---
+
 ## Suggested experiment ladder (smallest -> real)
 
-**3a. Prove Lever B in isolation (cheap, high-value, ~30 min).**
-Show that a memory-mapped file-backed region is excluded from a CRIU image.
-- Write two tiny scripts: one allocates N GB in ANONYMOUS memory, one mmaps an
-  N GB file. Checkpoint both; compare `du -sh ckpt/`.
-- Expected: anonymous -> image ~= N GB; mmap -> image ~= tiny. This isolates the
-  "image shrinking" mechanism before touching vLLM. Can even be done on a CPU box.
+**3a. (Optional, cheap) mmap-vs-anonymous image-shrink toy (~30 min, CPU box).**
+Allocate N GB anonymous vs mmap an N GB file; checkpoint both; compare `du -sh ckpt/`.
+Confirms file-backed pages are excluded from the image. Lower priority now that the
+blog shows the real shrink is `torch_memory_saver` (offload weights), not plain mmap.
 
-**3b. Checkpoint a live vLLM worker (the core of Stage 3).**
-- Launch vLLM serving a small model (Qwen2.5-7B or the 1.5B) with the API up and
-  one warm request done (so compile/graphs are built = the floor is "paid").
-- Confirm it's checkpointable: vLLM spawns worker processes and opens sockets
-  (API server, Ray/ZMQ). Expect the same class of issues as Stage 1's TCP socket —
-  may need to checkpoint only the engine worker subtree, or bring the server to a
-  quiescent state. This is the main engineering of Stage 3.
-- `criu dump` the worker (cuda plugin drains VRAM), then restore, then verify the
-  server still answers a request correctly.
+**3b. SGLang checkpoint WITHOUT shrinking (baseline, single GPU + NVMe).**
+- Install SGLang; serve a small model (1.5B/7B); do one warm request (build graphs).
+- Apply the env prep above (io_uring off, TCP localhost, offline, single compile thread).
+- `cuda-checkpoint lock+checkpoint` -> `criu dump` -> `criu restore` ->
+  `cuda-checkpoint restore+unlock`; verify the server answers correctly.
+- Expect a large (~VRAM-sized) image here — this is the "before" for shrinking.
 
-**3c. Add image shrinking (Lever B) to the vLLM checkpoint.**
-- Ensure weights are mmap'd/file-backed (vLLM + safetensors already mmap; verify
-  they land in the image as references, not content). Unmap KV cache if feasible.
-- Measure image size before/after shrinking.
+**3c. Add `torch_memory_saver` shrinking (the core result).**
+- Before checkpoint: `POST /release_memory_occupation` (weights+KV leave GPU).
+- Checkpoint (small image ~engine state) -> restore -> `POST /restore_memory_occupation`.
+- Measure image size before/after (target: VRAM-sized -> single-digit GB).
 
 **3d. The headline measurement.**
-- restore time (cold)  vs  our exp-3/4 cold-start baseline (41.8 s for 110B w/
-  InstantTensor; or the 7B/30B equivalents). Report the head-to-head.
-- Do this on FAST storage (see below) so the storage term isn't the bottleneck.
+- restore time (cold) vs our exp-3/4 cold-start baseline (7B/30B equivalents; 41.8 s
+  for 110B w/ InstantTensor). Report the head-to-head on FAST NVMe storage.
 
 ---
 
