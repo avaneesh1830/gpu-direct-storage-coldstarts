@@ -94,7 +94,7 @@ for the detailed phase plan.
 │   ├── ANALYSIS.md                          # full tables
 │   └── results/                             # TP8 JSONL data + raw vLLM logs
 └── experiment-05-criu-checkpoint-restore/   # CRIU checkpoint/restore, CPU → GPU (cuda-checkpoint)
-    ├── README.md  Dockerfile  STAGE3_PLAN.md
+    ├── README.md  STAGE3_PLAN.md
     ├── LEARNINGS_CPU.md  LEARNINGS_GPU.md    # full teaching walkthroughs
     ├── scripts/ (cpu/  gpu/)                 # counter + model checkpoint/restore scripts
     └── results/                             # RESULTS_cpu.md, RESULTS_gpu.md

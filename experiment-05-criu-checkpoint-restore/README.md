@@ -55,7 +55,6 @@ experiment-05-criu-checkpoint-restore/
 ├── LEARNINGS_CPU.md       # full teaching walkthrough — CPU stage (how CRIU works, every flag, issues)
 ├── LEARNINGS_GPU.md       # full teaching walkthrough — GPU stage (cuda-checkpoint, the honest analysis)
 ├── STAGE3_PLAN.md         # next step: CRIU on vLLM + image shrinking (the Doubleword blog)
-├── Dockerfile             # reproducible environment (criu + cuda-checkpoint + torch)
 ├── scripts/
 │   ├── cpu/               # counter.py, start/checkpoint/restore.sh, cpu_counter.py, start_model.sh
 │   └── gpu/               # gpu_counter.py, start_gpu.sh
@@ -71,11 +70,8 @@ experiment-05-criu-checkpoint-restore/
 - **cuda-checkpoint binary:** `github.com/NVIDIA/cuda-checkpoint` →
   `bin/x86_64_Linux/cuda-checkpoint` (note the `_Linux` suffix) → put on `PATH`.
 - CRIU is Linux-only but works in ordinary VMs (unlike GDS — no bare metal needed).
-- The `Dockerfile` captures this whole toolchain. A pre-built image is published:
-  ```bash
-  docker pull avaneesh1830/criu-coldstart:latest
-  ```
-  (Rebuild locally with `docker build --platform linux/amd64 -t avaneesh1830/criu-coldstart:latest .`)
+- No container is required — the experiments ran directly on the VM (`apt` + a Python
+  venv); the install steps above are the whole setup.
 
 ## How to run
 
@@ -94,7 +90,7 @@ tail -f counter.log                   # PASS: resumes at N+1
 ### Stage 2 — model on GPU (needs a GPU box, driver r550+)
 ```bash
 cd scripts/gpu
-# install criu + cuda-checkpoint + torch (see Dockerfile), pre-download the model
+# install criu + cuda-checkpoint + torch (see Environment above), pre-download the model
 MODEL_ID=Qwen/Qwen2.5-7B-Instruct ./start_gpu.sh    # loads model into VRAM
 PID=$(pgrep -f gpu_counter.py)
 sudo criu dump    -t $PID -D ckpt_gpu -v4 -o dump.log   # cuda plugin drains VRAM→host
